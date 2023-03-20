@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-types": "tsc --pretty --noEmit",
+    "check-format": "prettier --check .",
+    "check-lint": "eslint . --ext ts --ext tsx --ext js",
+    "format": "prettier --write .",
+    "test-all": "yarn format && yarn check-format && yarn check-lint && yarn check-types"
   },
   "dependencies": {
     "@types/node": "18.15.3",
@@ -15,9 +20,19 @@
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
+    "next-stride": "^2.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "^3.2.7",
     "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "@tsconfig/next": "^1.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.5"
   }
 }
