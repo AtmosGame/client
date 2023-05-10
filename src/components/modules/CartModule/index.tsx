@@ -97,17 +97,21 @@ export const CartModule: React.FC = () => {
         <div className="lg:grid lg:grid-cols-3 flex flex-col gap-8 max-h-screen">
           <div className="flex flex-col gap-4 lg:col-span-2 overflow-y-scroll pr-2 max-h-[400px]">
             {!isLoading ? (
-              listCartDetails?.cartDetailsData.map((app) => (
-                <CartCard
-                  key={app.id}
-                  id={app.id}
-                  addDate={app.addDate}
-                  appId={app.appId}
-                  appName={app.appName}
-                  appPrice={app.appPrice}
-                  deleteCartHandler={deleteCartHandler}
-                />
-              ))
+              listCartDetails?.cartDetailsData.length === 0 ? (
+                <p className="text-xl">Your cart is empty.</p>
+              ) : (
+                listCartDetails?.cartDetailsData.map((app) => (
+                  <CartCard
+                    key={app.id}
+                    id={app.id}
+                    addDate={app.addDate}
+                    appId={app.appId}
+                    appName={app.appName}
+                    appPrice={app.appPrice}
+                    deleteCartHandler={deleteCartHandler}
+                  />
+                ))
+              )
             ) : (
               <div className="w-full justify-center items-center flex">
                 <div className="border-inherit h-24 w-24 animate-spin rounded-full border-b-2"></div>
