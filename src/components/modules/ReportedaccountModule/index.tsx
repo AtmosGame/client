@@ -1,17 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { DetailReportedProps, ParamProps } from './interface'
 import axios from 'axios'
-import { useToast } from '@chakra-ui/react'
+import { Button, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { useAuthContext } from '@contexts'
 
 export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
   const [reportedaccount, setReportedAccount] = useState<DetailReportedProps>()
   const [isUpdated, setIsUpdated] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
+  const { user, isAuthenticated } = useAuthContext()
 
   useEffect(() => {
-    axios
+    if (isAuthenticated === false) {
+      toast({
+        title: 'Anda harus login terlebih dahulu!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/login')
+    } else if (user?.role !== 'ADMIN' && user?.role !== undefined) {
+      toast({
+        title: 'Anda tidak memiliki akses ke halaman ini!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/')
+    } else if (user?.role === 'ADMIN') {
+      axios
       .get(`/api/report/${username}`)
       .then(function (response) {
         const { username, totalReports, listReports } = response.data
@@ -52,7 +73,10 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
         router.push('/allreportedaccount')
       })
-  }, [isUpdated])
+    } else {
+      // do nothing
+    }
+  }, [isUpdated, user])
 
   const handleApproveButton = () => {
     axios
@@ -112,6 +136,10 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
       })
   }
 
+  const handleReportedAccountButton = () => {
+    router.push('/allreportedaccount')
+  }
+
   const optionsDate: Intl.DateTimeFormatOptions = {
     weekday: 'long',
     day: 'numeric',
@@ -133,39 +161,49 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
   }
 
   return (
-    <div className="flex flex-col items-center pt-5 gap-4 w-full">
-      <h1 className="font-bold text-2xl md:text-3xl text-white text-center">{`Detail Laporan Akun ${reportedaccount?.username}`}</h1>
-      <h2 className="font-bold text-lg md:text-xl text-fuchsia-500">{`Jumlah Laporan: ${reportedaccount?.totalReports}`}</h2>
-
-      <div className="flex flex-col justify-center items-center gap-5 w-full px-5 md:px-0">
-        {reportedaccount?.listReports.map((report) => (
-          <div
-            className="w-full md:w-[350px] h-auto bg-gray-500/50 rounded-[10px] px-6 flex flex-col justify-center gap-3 py-4"
-            id={report.id.toString()}
-          >
-            <span className="font-bold text-emerald-300/90 text-sm">
-              {`${formateDate(report.dateReport)}`}
-            </span>
-            <p className="break-all font-medium text-white text-lg">{report.information}</p>
-
-            <div className="flex flex-row w-2/3 gap-4">
-              <button
-                className="w-1/2 bg-green-400 rounded-[10px] py-1 items-center justify-center flex"
-                onClick={() => handleApproveButton()}
-              >
-                <span className="font-bold text-sm text-gray-750">Approve</span>
-              </button>
-
-              <button
-                className="w-1/2 bg-red-500/75 rounded-[10px] py-1 items-center justify-center flex"
-                onClick={() => handleRejectButton(report.id)}
-              >
-                <span className="font-bold text-sm text-gray-50">Reject</span>
-              </button>
+    <>
+      {user?.role === 'ADMIN'? (
+        <div className="flex flex-col items-center pt-5 gap-4 w-full">
+        <div className='pb-2'>
+          <Button variant='solid' className='bg-fuchsia-700 text-white' onClick={handleReportedAccountButton}>List Reported Account</Button>
+        </div>
+        <h1 className="font-bold text-2xl md:text-3xl text-white text-center">{`Detail Laporan Akun ${reportedaccount?.username}`}</h1>
+        <h2 className="font-bold text-lg md:text-xl text-fuchsia-500">{`Jumlah Laporan: ${reportedaccount?.totalReports}`}</h2>
+  
+        <div className="flex flex-col justify-center items-center gap-5 w-full px-5 md:px-0">
+          {reportedaccount?.listReports.map((report, key) => (
+            <div
+              className="w-full md:w-[350px] h-auto bg-gray-500/50 rounded-[10px] px-6 flex flex-col justify-center gap-3 py-4"
+              id={report.id.toString()}
+              key={key}
+            >
+              <span className="font-bold text-emerald-300/90 text-sm">
+                {`${formateDate(report.dateReport)}`}
+              </span>
+              <p className="break-all font-medium text-white text-lg">{report.information}</p>
+  
+              <div className="flex flex-row w-2/3 gap-4">
+                <button
+                  className="w-1/2 bg-green-400 rounded-[10px] py-1 items-center justify-center flex"
+                  onClick={() => handleApproveButton()}
+                >
+                  <span className="font-bold text-sm text-gray-750">Approve</span>
+                </button>
+  
+                <button
+                  className="w-1/2 bg-red-500/75 rounded-[10px] py-1 items-center justify-center flex"
+                  onClick={() => handleRejectButton(report.id)}
+                >
+                  <span className="font-bold text-sm text-gray-50">Reject</span>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+      ): (
+        <></>
+      )}
+    </>
   )
 }
