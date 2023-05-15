@@ -82,7 +82,7 @@ export const CartModule: React.FC = () => {
   }, [isAuthenticated])
 
   return (
-    <div className="relative h-screen bg-gray-900 text-white py-24 lg:py-36 overflow-hidden">
+    <div className="relative h-screen text-white py-24 lg:py-36 overflow-hidden">
       <div className="relative max-w-[80%] mx-auto space-y-12 z-10">
         <div className="flex gap-4 items-center select-none">
           <h1 className="font-bold text-5xl">

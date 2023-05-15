@@ -10,7 +10,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider>
       <AuthContextProvider>
-        <main className={`${inter.className} w-full min-h-screen`}>
+        <main className={`${inter.className} w-full min-h-screen bg-gray-900`}>
           <Component {...pageProps} />
         </main>
       </AuthContextProvider>
