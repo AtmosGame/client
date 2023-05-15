@@ -112,45 +112,55 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
       })
   }
 
+  const optionsDate: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }
+
+  function formateDate(dateReport: string){
+    try{
+      return new Intl.DateTimeFormat('id-ID', optionsDate).format(
+        new Date(dateReport)
+      )
+    }catch (error) {
+      // do nothing
+    }
+  }
+
   return (
     <div className="flex flex-col items-center pt-5 gap-4 w-full">
-      <h1 className="font-bold text-2xl md:text-3xl text-[#080B2B] text-center">{`Detail Laporan Akun ${reportedaccount?.username}`}</h1>
-      <h2 className="font-bold text-lg md:text-xl text-purple-800">{`Jumlah Laporan: ${reportedaccount?.totalReports}`}</h2>
+      <h1 className="font-bold text-2xl md:text-3xl text-white text-center">{`Detail Laporan Akun ${reportedaccount?.username}`}</h1>
+      <h2 className="font-bold text-lg md:text-xl text-fuchsia-500">{`Jumlah Laporan: ${reportedaccount?.totalReports}`}</h2>
 
       <div className="flex flex-col justify-center items-center gap-5 w-full px-5 md:px-0">
         {reportedaccount?.listReports.map((report) => (
           <div
-            className="w-full md:w-[350px] h-auto bg-emerald-500 rounded-[10px] px-6 flex flex-col justify-center gap-3 py-4"
+            className="w-full md:w-[350px] h-auto bg-gray-500/50 rounded-[10px] px-6 flex flex-col justify-center gap-3 py-4"
             id={report.id.toString()}
           >
-            <span className="font-bold">{`${
-              report.dateReport[0]
-            }-${report.dateReport[1]
-              .toString()
-              .padStart(2, '0')}-${report.dateReport[2]
-              .toString()
-              .padStart(2, '0')} ${report.dateReport[3]
-              .toString()
-              .padStart(2, '0')}:${report.dateReport[4]
-              .toString()
-              .padStart(2, '0')}:${report.dateReport[5]
-              .toString()
-              .padStart(2, '0')}`}</span>
-            <p className="break-all text-fuchsia-950">{report.information}</p>
+            <span className="font-bold text-emerald-300/90 text-sm">
+              {`${formateDate(report.dateReport)}`}
+            </span>
+            <p className="break-all font-medium text-white text-lg">{report.information}</p>
 
             <div className="flex flex-row w-2/3 gap-4">
               <button
                 className="w-1/2 bg-green-400 rounded-[10px] py-1 items-center justify-center flex"
                 onClick={() => handleApproveButton()}
               >
-                <span className="font-bold text-sm">Approve</span>
+                <span className="font-bold text-sm text-gray-750">Approve</span>
               </button>
 
               <button
-                className="w-1/2 bg-red-500 rounded-[10px] py-1 items-center justify-center flex"
+                className="w-1/2 bg-red-500/75 rounded-[10px] py-1 items-center justify-center flex"
                 onClick={() => handleRejectButton(report.id)}
               >
-                <span className="font-bold text-sm text-white">Reject</span>
+                <span className="font-bold text-sm text-gray-50">Reject</span>
               </button>
             </div>
           </div>

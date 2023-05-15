@@ -13,7 +13,7 @@ export const CardReportedAccount: React.FC<ListReportedAccounts> = ({
   return (
     <div className="flex flex-col items-center justify-center gap-5 px-6">
       {listUser.length == 0 ? (
-        <h3 className="text-indigo-800 font-bold md:text-lg">
+        <h3 className="text-emerald-400 font-bold md:text-lg">
           Belum ada user yang memiliki laporan!
         </h3>
       ) : (
@@ -24,7 +24,7 @@ export const CardReportedAccount: React.FC<ListReportedAccounts> = ({
               onClick={() => handleClickCard(username)}
               key={id}
             >
-              <div className="py-1 px-6 flex items-center justify-center break-all">
+              <div className="py-2 px-6 flex items-center justify-center break-all">
                 <h3 className="text-white font-bold md:text-lg">{username}</h3>
               </div>
             </button>
