@@ -59,9 +59,9 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
   return (
     <>
       <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
-        <div className="w-full md:w-[500px] h-auto flex flex-col">
+        <div className="w-full md:w-[500px] h-auto flex flex-col z-10">
           <div
-            className={`w-full h-full bg-green-400 flex justify-center items-center px-4 md:px-8 py-4 ${
+            className={`w-full h-full bg-gray-500/25 flex justify-center items-center px-4 md:px-8 py-4 ${
               user?.role == 'USER' ? `rounded-[12px]` : `rounded-t-[12px]`
             }`}
           >
@@ -69,31 +69,31 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
           </div>
 
           {user?.role == 'DEVELOPER' ? (
-            <div className="w-full h-1/3 bg-green-600 rounded-b-[12px] relative">
+            <div className="w-full h-1/3 bg-gray-500 rounded-b-[12px] relative">
               <h2 className="text-white text-base md:text-lg py-1 pl-5 md:pl-8">
                 APPLICATIONS
               </h2>
 
               <Tooltip
                 content="List Applications"
-                className="bg-transparent text-cyan-700 text-sm font-bold"
+                className="bg-transparent text-yellow-200/75 text-sm font-bold"
               >
                 <button
                   className="absolute right-5 bottom-4"
                   onClick={changeActive}
                 >
-                  <div className="w-10 h-10 rounded-full bg-emerald-300 items-center flex justify-center">
+                  <div className="w-10 h-10 rounded-full bg-emerald-400 items-center flex justify-center">
                     {dropdownActive ? (
                       <ChevronUp
                         size="w-6 h-6"
-                        fill="#0d9489"
-                        stroke="#0d9489"
+                        fill="#212121"
+                        stroke="#212121"
                       />
                     ) : (
                       <ChevronDown
                         size="w-6 h-6"
-                        fill="#0d9489"
-                        stroke="#0d9489"
+                        fill="#212121"
+                        stroke="#212121"
                       />
                     )}
                   </div>

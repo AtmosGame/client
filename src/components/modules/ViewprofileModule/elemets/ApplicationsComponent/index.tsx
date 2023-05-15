@@ -7,7 +7,7 @@ export const ApplicatonsComponent: React.FC<ListApplicationsProps> = ({
   username,
 }) => (
   <>
-    <div className="w-full md:w-[500px] h-auto bg-orange-300 rounded-[12px] flex flex-row items-center px-5 md:px-8 py-4">
+    <div className="w-full md:w-[500px] h-auto bg-gray-500 rounded-[12px] flex flex-row items-center px-5 md:px-8 py-4">
       <div className="items-center">
         <AiTwotoneAppstore className="w-10 md:w-12 h-10 md:h-12 text-white" />
       </div>

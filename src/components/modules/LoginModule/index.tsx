@@ -49,7 +49,7 @@ export const LoginModule: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white py-36">
+    <div className="min-h-screen text-white py-36">
       <div className="mx-auto max-w-[80%]">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div>
