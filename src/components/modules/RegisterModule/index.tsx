@@ -1,10 +1,10 @@
 import Select from 'react-select'
-import { Button, Input, useToast } from '@chakra-ui/react'
+import { Button, Input, MenuItem, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { FormData, FormDefault } from './interface'
+import { FormData } from './interface'
 import Cookies from 'js-cookie'
 
 export const RegisterModule: React.FC = () => {
@@ -16,15 +16,14 @@ export const RegisterModule: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormDefault>({
+  } = useForm<FormData>({
     defaultValues: {
       username: '',
       password: '',
-      role: { value: 'USER', label: 'USER' },
+      role: '',
     },
   })
   const onSubmit = (data: FormData) => {
-    data.role = data.role.value
     console.log(data)
     setIsLoading(true)
     axios
@@ -92,15 +91,27 @@ export const RegisterModule: React.FC = () => {
               rules={{
                 required: true,
               }}
-              render={({ field }) => (
+              render={() => (
                 <Select
-                  {...field}
-                  options={[
-                    { value: 'USER', label: 'USER' },
-                    { value: 'DEVELOPER', label: 'DEVELOPER' },
-                  ]}
                   className="text-black"
-                />
+                  placeholder="Placeholder"
+                  title="Select"
+                  subTitle="Wajib diisi!"
+                  label="Tahun Ajaran"
+                  name="yearOfStudy"
+                  required
+                  rules={{ required: 'Anda harus mengisi ini!' }}
+                  control={control}
+                  select
+                >
+                  <
+                  <MenuItem key={1} value="USER">
+                    USER
+                  </MenuItem>
+                  <MenuItem key={2} value="DEVELOPER">
+                    DEVELOPER
+                  </MenuItem>
+                </Select>
               )}
             />
             {errors.role && (
