@@ -1,9 +1,10 @@
+import Select from 'react-select'
 import { Button, Input, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { FormData } from './interface'
+import { FormData, FormDefault } from './interface'
 import Cookies from 'js-cookie'
 
 export const RegisterModule: React.FC = () => {
@@ -15,14 +16,16 @@ export const RegisterModule: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormDefault>({
     defaultValues: {
       username: '',
       password: '',
-      role: '',
+      role: { value: 'USER', label: 'USER' },
     },
   })
   const onSubmit = (data: FormData) => {
+    data.role = data.role.value
+    console.log(data)
     setIsLoading(true)
     axios
       .post('/api/auth/register', data)
@@ -89,7 +92,16 @@ export const RegisterModule: React.FC = () => {
               rules={{
                 required: true,
               }}
-              render={({ field }) => <Input {...field} />}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  options={[
+                    { value: 'USER', label: 'USER' },
+                    { value: 'DEVELOPER', label: 'DEVELOPER' },
+                  ]}
+                  className="text-black"
+                />
+              )}
             />
             {errors.role && (
               <p className="text-sm text-red-400">{errors.role.message}</p>
