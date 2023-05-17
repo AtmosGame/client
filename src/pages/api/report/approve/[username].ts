@@ -5,7 +5,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { username } = req.query
   axios
     .delete(
-      `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/report/approve/${username}`
+      `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/report/approve/${username}`,
+      {
+        headers: {
+          Authorization: req.headers.authorization
+        }
+      }
     )
     .then((response) => {
       res.status(response.status).json(response.data)

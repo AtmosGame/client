@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Button, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
+import Cookies from 'js-cookie'
 
 export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
   const [reportedaccount, setReportedAccount] = useState<DetailReportedProps>()
@@ -33,7 +34,12 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
       router.push('/')
     } else if (user?.role === 'ADMIN') {
       axios
-      .get(`/api/report/${username}`)
+      .get(`/api/report/${username}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}}`
+          }
+        })
       .then(function (response) {
         const { username, totalReports, listReports } = response.data
         setReportedAccount({
@@ -80,7 +86,12 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
   const handleApproveButton = () => {
     axios
-      .post(`/api/report/approve/${username}`)
+      .delete(`/api/report/approve/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}}`
+        }
+      })
       .then(function (response) {
         toast({
           title: `${response.data}`,
@@ -106,7 +117,12 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
   const handleRejectButton = (id: number) => {
     axios
-      .delete(`/api/report/reject/${username}/${id}`)
+      .delete(`/api/report/reject/${username}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}}`
+          }
+        })
       .then(function (response) {
         if (response.data.haveReport) {
           setIsUpdated(!isUpdated)
@@ -121,7 +137,6 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
           router.push('/allreportedaccount')
         }
-        console.log(response.data.haveReport)
       })
       .catch(function (error) {
         toast({
