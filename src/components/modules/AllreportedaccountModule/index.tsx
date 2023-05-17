@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
+import Cookies from 'js-cookie'
 
 export const AllreportedaccountModule: React.FC = () => {
   const [listReportedAccount, setListReportedAccount] = useState<string[]>()
@@ -32,7 +33,12 @@ export const AllreportedaccountModule: React.FC = () => {
       router.push('/')
     } else if (user?.role === 'ADMIN') {
       axios
-        .get('/api/report')
+        .get('/api/report', 
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('token')}}`
+            }
+          })
         .then(function (response) {
           setListReportedAccount(response.data.listUser)
         })
