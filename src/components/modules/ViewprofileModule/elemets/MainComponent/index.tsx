@@ -5,7 +5,7 @@ import { HiUserCircle } from 'react-icons/hi'
 export const MainComponent: React.FC<UserProps> = ({ user }) => (
   <div className="w-full h-full flex flex-row items-center">
     <div>
-      {user?.profilePicture == '' ? (
+      {user?.profilePicture == '' || user?.profilePicture == null ? (
         <HiUserCircle className="w-16 md:w-20 h-16 md:h-20 rounded-full text-emerald-400" />
       ) : (
         <></>
