@@ -7,7 +7,6 @@ import { useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
-import Link from 'next/link'
 
 export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
   const [userView, setUser] = useState<ViewProfileProps>()
