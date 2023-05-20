@@ -14,8 +14,13 @@ export const LogoutButton: React.FC = () => {
     const data = {
       username: user?.username,
     }
+    console.log(data)
     axios
-      .post('/api/auth/logout', data)
+      .post('/api/auth/logout', data, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}}`,
+        },
+      })
       .then((response) => {
         Cookies.remove('token')
         toast({
@@ -29,7 +34,7 @@ export const LogoutButton: React.FC = () => {
       })
       .catch((error) => {
         toast({
-          title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+          title: 'Anda belum login, silahkan login terlebih dahulu!',
           status: 'error',
           position: 'top',
           duration: 4000,
@@ -39,10 +44,8 @@ export const LogoutButton: React.FC = () => {
   }
 
   return (
-    <div>
-      <Button onClick={logoutHandler} colorScheme="red" variant="solid">
-        Logout
-      </Button>
-    </div>
+    <Button onClick={logoutHandler} colorScheme="red" variant="solid">
+      Logout
+    </Button>
   )
 }
