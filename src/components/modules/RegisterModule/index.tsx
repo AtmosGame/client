@@ -1,14 +1,22 @@
 import Select from 'react-select'
-import { Button, Input, useToast } from '@chakra-ui/react'
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useToast,
+} from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { FormData, FormDefault } from './interface'
 import Cookies from 'js-cookie'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 export const RegisterModule: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
 
@@ -94,11 +102,20 @@ export const RegisterModule: React.FC = () => {
                   required: true,
                 }}
                 render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="password"
-                    placeholder="Masukkan password Anda"
-                  />
+                  <InputGroup>
+                    <Input
+                      {...field}
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Masukkan password Anda"
+                    />
+                    <InputRightElement>
+                      {showPassword ? (
+                        <FaEyeSlash onClick={() => setShowPassword(false)} />
+                      ) : (
+                        <FaEye onClick={() => setShowPassword(true)} />
+                      )}
+                    </InputRightElement>
+                  </InputGroup>
                 )}
               />
               {errors.password && (
@@ -129,6 +146,7 @@ export const RegisterModule: React.FC = () => {
                       }),
                       option: (provided) => ({
                         ...provided,
+                        backgroundColor: 'transparent',
                         color: 'black',
                       }),
                     }}

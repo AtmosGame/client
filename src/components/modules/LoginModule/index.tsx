@@ -1,13 +1,21 @@
-import { Button, Input, useToast } from '@chakra-ui/react'
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useToast,
+} from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { FormData } from './interface'
 import Cookies from 'js-cookie'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 export const LoginModule: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
 
@@ -84,11 +92,20 @@ export const LoginModule: React.FC = () => {
                   required: true,
                 }}
                 render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="password"
-                    placeholder="Masukkan password Anda"
-                  />
+                  <InputGroup>
+                    <Input
+                      {...field}
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Masukkan password Anda"
+                    />
+                    <InputRightElement>
+                      {showPassword ? (
+                        <FaEyeSlash onClick={() => setShowPassword(false)} />
+                      ) : (
+                        <FaEye onClick={() => setShowPassword(true)} />
+                      )}
+                    </InputRightElement>
+                  </InputGroup>
                 )}
               />
               {errors.password && (
