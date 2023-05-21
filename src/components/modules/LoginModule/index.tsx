@@ -49,46 +49,71 @@ export const LoginModule: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen text-white py-36">
-      <div className="mx-auto max-w-[80%]">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div>
-            <label>Username</label>
-            <Controller
-              name="username"
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => <Input {...field} />}
-            />
-            {errors.username && (
-              <p className="text-sm text-red-400">{errors.username.message}</p>
-            )}
-          </div>
-          <div>
-            <label>Password</label>
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => <Input {...field} type="password" />}
-            />
-            {errors.password && (
-              <p className="text-sm text-red-400">{errors.password.message}</p>
-            )}
-          </div>
-          <Button
-            type="submit"
-            colorScheme="teal"
-            variant="solid"
-            isLoading={isLoading}
+    <div className="relative h-screen text-white py-24 lg:py-36 overflow-hidden">
+      <div className="mx-auto max-w-[30%] z-50">
+        <h1 className="text-4xl text-center font-bold pb-6">Login</h1>
+        <div className="backdrop-blur-md bg-white/5 border-[1px] border-white rounded-xl p-8">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
           >
-            Login
-          </Button>
-        </form>
+            <div>
+              <label>Username</label>
+              <Controller
+                name="username"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field }) => (
+                  <Input {...field} placeholder="Masukkan username Anda" />
+                )}
+              />
+              {errors.username && (
+                <p className="text-sm text-red-400">
+                  {errors.username.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label>Password</label>
+              <Controller
+                name="password"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="Masukkan password Anda"
+                  />
+                )}
+              />
+              {errors.password && (
+                <p className="text-sm text-red-400">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+            <div className="flex justify-center pt-6">
+              <Button
+                type="submit"
+                colorScheme="teal"
+                variant="solid"
+                isLoading={isLoading}
+              >
+                Login
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="z-0 w-full">
+        <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
     </div>
   )

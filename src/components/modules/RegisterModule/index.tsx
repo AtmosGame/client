@@ -75,7 +75,9 @@ export const RegisterModule: React.FC = () => {
                 rules={{
                   required: true,
                 }}
-                render={({ field }) => <Input {...field} />}
+                render={({ field }) => (
+                  <Input {...field} placeholder="Masukkan username Anda" />
+                )}
               />
               {errors.username && (
                 <p className="text-sm text-red-400">
@@ -91,7 +93,13 @@ export const RegisterModule: React.FC = () => {
                 rules={{
                   required: true,
                 }}
-                render={({ field }) => <Input {...field} type="password" />}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="Masukkan password Anda"
+                  />
+                )}
               />
               {errors.password && (
                 <p className="text-sm text-red-400">
@@ -110,7 +118,20 @@ export const RegisterModule: React.FC = () => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    className="text-black"
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        backgroundColor: 'transparent',
+                      }),
+                      singleValue: (provided) => ({
+                        ...provided,
+                        color: 'white',
+                      }),
+                      option: (provided) => ({
+                        ...provided,
+                        color: 'black',
+                      }),
+                    }}
                     options={[
                       { value: 'DEVELOPER', label: 'DEVELOPER' },
                       { value: 'USER', label: 'USER' },
