@@ -82,7 +82,7 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
     } else {
       // do nothing
     }
-  }, [isUpdated, user])
+  }, [isUpdated, user, isAuthenticated])
 
   const handleApproveButton = () => {
     axios

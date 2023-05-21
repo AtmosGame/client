@@ -56,7 +56,7 @@ export const AllreportedaccountModule: React.FC = () => {
     } else {
       // do nothing
     }
-  }, [user])
+  }, [user, isAuthenticated])
 
   return (
     <>
