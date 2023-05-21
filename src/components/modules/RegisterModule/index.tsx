@@ -1,10 +1,10 @@
 import Select from 'react-select'
-import { Button, Input, MenuItem, useToast } from '@chakra-ui/react'
+import { Button, Input, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { FormData } from './interface'
+import { FormData, FormDefault } from './interface'
 import Cookies from 'js-cookie'
 
 export const RegisterModule: React.FC = () => {
@@ -16,18 +16,25 @@ export const RegisterModule: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormDefault>({
     defaultValues: {
       username: '',
       password: '',
-      role: '',
+      role: { value: 'USER', label: 'USER' },
     },
   })
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: FormDefault) => {
+    const role = data.role.value
+    const { username, password } = data
+    const sendData: FormData = {
+      username,
+      password,
+      role,
+    }
     console.log(data)
     setIsLoading(true)
     axios
-      .post('/api/auth/register', data)
+      .post('/api/auth/register', sendData)
       .then((response) => {
         Cookies.set('token', response.data.token)
         toast({
@@ -91,27 +98,15 @@ export const RegisterModule: React.FC = () => {
               rules={{
                 required: true,
               }}
-              render={() => (
+              render={({ field }) => (
                 <Select
+                  {...field}
                   className="text-black"
-                  placeholder="Placeholder"
-                  title="Select"
-                  subTitle="Wajib diisi!"
-                  label="Tahun Ajaran"
-                  name="yearOfStudy"
-                  required
-                  rules={{ required: 'Anda harus mengisi ini!' }}
-                  control={control}
-                  select
-                >
-                  <
-                  <MenuItem key={1} value="USER">
-                    USER
-                  </MenuItem>
-                  <MenuItem key={2} value="DEVELOPER">
-                    DEVELOPER
-                  </MenuItem>
-                </Select>
+                  options={[
+                    { value: 'DEVELOPER', label: 'DEVELOPER' },
+                    { value: 'USER', label: 'USER' },
+                  ]}
+                />
               )}
             />
             {errors.role && (
