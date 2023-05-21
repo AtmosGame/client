@@ -13,11 +13,16 @@ import {
 type Props = {
   isOpenProp: boolean
   onCloseProp: () => void
+  onSubmitProp: () => void
 }
 
 const Overlay = () => <ModalOverlay bg="white.300" backdropFilter="blur(6px)" />
 
-export const SubmitValidationModal = ({ isOpenProp, onCloseProp }: Props) => {
+export const SubmitValidationModal = ({
+  isOpenProp,
+  onCloseProp,
+  onSubmitProp,
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [overlay, setOverlay] = useState(<Overlay />)
 
@@ -53,7 +58,9 @@ export const SubmitValidationModal = ({ isOpenProp, onCloseProp }: Props) => {
             <p>We will register you after pressing the yes button.</p>
           </ModalBody>
           <ModalFooter className="flex justify-center gap-3">
-            <Button colorScheme="teal">Yes</Button>
+            <Button colorScheme="teal" onClick={onSubmitProp}>
+              Yes
+            </Button>
             <Button colorScheme="gray" mr={3} onClick={handleClose}>
               Check Again
             </Button>

@@ -23,33 +23,60 @@ export const RegisterModule: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
 
-  const handleCloseModal = () => {
-    setIsOpenModal(false)
-  }
-  const handleOpenModal = () => {
-    setIsOpenModal(true)
-  }
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormDefault>({
     defaultValues: {
       username: '',
       password: '',
+      confirm: '',
       role: { value: 'USER', label: 'USER' },
     },
   })
-  const onSubmit = (data: FormDefault) => {
-    const role = data.role.value
-    const { username, password } = data
-    const sendData: FormData = {
-      username,
-      password,
-      role,
+
+  const username = watch('username')
+  const password = watch('password')
+  const confirmPassword = watch('confirm')
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false)
+  }
+  const handleOpenModal = () => {
+    if (username.length < 1) {
+      toast({
+        title: 'Username cannot be empty!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      return
+    }
+    if (password.length < 1) {
+      toast({
+        title: 'Password cannot be empty!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      return
+    }
+    if (confirmPassword.length < 1) {
+      toast({
+        title: 'Confirm Password cannot be empty!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      return
     }
     // Validation for password
-    if (data.password.length < 8) {
+    if (password.length < 8) {
       toast({
         title: 'Minimum 8 characters password!',
         status: 'error',
@@ -59,7 +86,7 @@ export const RegisterModule: React.FC = () => {
       })
       return
     }
-    if (data.password != data.confirm) {
+    if (password != confirmPassword) {
       toast({
         title: 'Password and confirm password are not the same!',
         status: 'error',
@@ -68,6 +95,17 @@ export const RegisterModule: React.FC = () => {
         isClosable: true,
       })
       return
+    }
+    // hanya bisa dibuka saat form sudah diisi
+    setIsOpenModal(true)
+  }
+  const onSubmit = (data: FormDefault) => {
+    const role = data.role.value
+    const { username, password } = data
+    const sendData: FormData = {
+      username,
+      password,
+      role,
     }
     setIsLoading(true)
     axios
@@ -224,7 +262,6 @@ export const RegisterModule: React.FC = () => {
             </div>
             <div className="flex justify-center pt-6">
               <Button
-                // type="submit"
                 colorScheme="teal"
                 variant="solid"
                 isLoading={isLoading}
@@ -236,6 +273,7 @@ export const RegisterModule: React.FC = () => {
             <SubmitValidationModal
               isOpenProp={isOpenModal}
               onCloseProp={handleCloseModal}
+              onSubmitProp={handleSubmit(onSubmit)}
             />
           </form>
         </div>
