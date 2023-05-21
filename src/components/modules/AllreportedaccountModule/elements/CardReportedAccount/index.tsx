@@ -18,11 +18,11 @@ export const CardReportedAccount: React.FC<ListReportedAccounts> = ({
         </h3>
       ) : (
         <>
-          {listUser.map((username: string, id: number) => (
+          {listUser.map((username, key) => (
             <button
               className="w-[250px] md:w-[350px] h-auto bg-fuchsia-700 rounded-[10px]"
               onClick={() => handleClickCard(username)}
-              key={id}
+              key={key}
             >
               <div className="py-2 px-6 flex items-center justify-center break-all">
                 <h3 className="text-white font-bold md:text-lg">{username}</h3>
