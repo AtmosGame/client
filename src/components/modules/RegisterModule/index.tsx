@@ -17,6 +17,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 export const RegisterModule: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
 
@@ -39,7 +40,16 @@ export const RegisterModule: React.FC = () => {
       password,
       role,
     }
-    console.log(data)
+    if (data.password != data.confirm) {
+      toast({
+        title: 'Password tidak sama!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      return
+    }
     setIsLoading(true)
     axios
       .post('/api/auth/register', sendData)
@@ -67,7 +77,7 @@ export const RegisterModule: React.FC = () => {
   }
 
   return (
-    <div className="relative h-screen text-white py-24 lg:py-28 overflow-hidden">
+    <div className="relative h-screen text-white py-24 lg:py-24 overflow-hidden">
       <div className="mx-auto max-w-[30%] z-50">
         <h1 className="text-4xl text-center font-bold pb-6">Register</h1>
         <div className="backdrop-blur-md bg-white/5 border-[1px] border-white rounded-xl p-8">
@@ -122,6 +132,37 @@ export const RegisterModule: React.FC = () => {
                 <p className="text-sm text-red-400">
                   {errors.password.message}
                 </p>
+              )}
+            </div>
+            <div>
+              <label>Confirm Password</label>
+              <Controller
+                name="confirm"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field }) => (
+                  <InputGroup>
+                    <Input
+                      {...field}
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      placeholder="Ulangi password Anda"
+                    />
+                    <InputRightElement>
+                      {showConfirmPassword ? (
+                        <FaEyeSlash
+                          onClick={() => setShowConfirmPassword(false)}
+                        />
+                      ) : (
+                        <FaEye onClick={() => setShowConfirmPassword(true)} />
+                      )}
+                    </InputRightElement>
+                  </InputGroup>
+                )}
+              />
+              {errors.confirm && (
+                <p className="text-sm text-red-400">{errors.confirm.message}</p>
               )}
             </div>
             <div>
