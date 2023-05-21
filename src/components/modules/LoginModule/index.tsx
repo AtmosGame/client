@@ -36,7 +36,7 @@ export const LoginModule: React.FC = () => {
       .then((response) => {
         Cookies.set('token', response.data.token)
         toast({
-          title: 'Berhasil login!',
+          title: 'Login successfully!',
           status: 'success',
           position: 'top',
           duration: 4000,
@@ -46,7 +46,7 @@ export const LoginModule: React.FC = () => {
       })
       .catch((error) => {
         toast({
-          title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+          title: 'There is an error! Call the Contact Person immediately',
           status: 'error',
           position: 'top',
           duration: 4000,
@@ -74,7 +74,7 @@ export const LoginModule: React.FC = () => {
                   required: true,
                 }}
                 render={({ field }) => (
-                  <Input {...field} placeholder="Masukkan username Anda" />
+                  <Input {...field} placeholder="Enter your username" />
                 )}
               />
               {errors.username && (
@@ -96,7 +96,7 @@ export const LoginModule: React.FC = () => {
                     <Input
                       {...field}
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Masukkan password Anda"
+                      placeholder="Enter your password"
                     />
                     <InputRightElement>
                       {showPassword ? (

@@ -40,9 +40,20 @@ export const RegisterModule: React.FC = () => {
       password,
       role,
     }
+    // Validation for password
+    if (data.password.length < 8) {
+      toast({
+        title: 'Minimum 8 characters password!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      return
+    }
     if (data.password != data.confirm) {
       toast({
-        title: 'Password tidak sama!',
+        title: 'Password and confirm password are not the same!',
         status: 'error',
         position: 'top',
         duration: 4000,
@@ -56,7 +67,7 @@ export const RegisterModule: React.FC = () => {
       .then((response) => {
         Cookies.set('token', response.data.token)
         toast({
-          title: 'Berhasil register!',
+          title: 'Register successfully!',
           status: 'success',
           position: 'top',
           duration: 4000,
@@ -65,8 +76,9 @@ export const RegisterModule: React.FC = () => {
         router.push('/')
       })
       .catch((error) => {
+        console.log(error)
         toast({
-          title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+          title: error.response.data.responseMessage,
           status: 'error',
           position: 'top',
           duration: 4000,
@@ -94,7 +106,7 @@ export const RegisterModule: React.FC = () => {
                   required: true,
                 }}
                 render={({ field }) => (
-                  <Input {...field} placeholder="Masukkan username Anda" />
+                  <Input {...field} placeholder="Enter your username" />
                 )}
               />
               {errors.username && (
@@ -116,7 +128,7 @@ export const RegisterModule: React.FC = () => {
                     <Input
                       {...field}
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Masukkan password Anda"
+                      placeholder="Enter your password"
                     />
                     <InputRightElement>
                       {showPassword ? (
@@ -147,7 +159,7 @@ export const RegisterModule: React.FC = () => {
                     <Input
                       {...field}
                       type={showConfirmPassword ? 'text' : 'password'}
-                      placeholder="Ulangi password Anda"
+                      placeholder="Repeat your password"
                     />
                     <InputRightElement>
                       {showConfirmPassword ? (
@@ -223,3 +235,4 @@ export const RegisterModule: React.FC = () => {
     </div>
   )
 }
+
