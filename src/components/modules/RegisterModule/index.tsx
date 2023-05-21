@@ -13,14 +13,22 @@ import { Controller, useForm } from 'react-hook-form'
 import { FormData, FormDefault } from './interface'
 import Cookies from 'js-cookie'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { SubmitValidationModal } from './elements/SubmitValidationModal'
 
 export const RegisterModule: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const toast = useToast()
   const router = useRouter()
 
+  const handleCloseModal = () => {
+    setIsOpenModal(false)
+  }
+  const handleOpenModal = () => {
+    setIsOpenModal(true)
+  }
   const {
     control,
     handleSubmit,
@@ -216,14 +224,19 @@ export const RegisterModule: React.FC = () => {
             </div>
             <div className="flex justify-center pt-6">
               <Button
-                type="submit"
+                // type="submit"
                 colorScheme="teal"
                 variant="solid"
                 isLoading={isLoading}
+                onClick={handleOpenModal}
               >
                 Register
               </Button>
             </div>
+            <SubmitValidationModal
+              isOpenProp={isOpenModal}
+              onCloseProp={handleCloseModal}
+            />
           </form>
         </div>
       </div>
@@ -235,4 +248,3 @@ export const RegisterModule: React.FC = () => {
     </div>
   )
 }
-
