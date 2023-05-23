@@ -5,12 +5,36 @@ import { useRouter } from 'next/router'
 import React, {useEffect, useState} from 'react'
 import {Controller, useForm} from "react-hook-form";
 import { FormData } from './interface'
+import Cookies from "js-cookie";
 
 export const SecretTokenModule: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const { user, isAuthenticated } = useAuthContext()
     const toast = useToast()
     const router = useRouter()
+
+
+    useEffect(() => {
+        if (isAuthenticated === false) {
+            toast({
+                title: 'Anda harus login terlebih dahulu!',
+                status: 'error',
+                position: 'top',
+                duration: 4000,
+                isClosable: true,
+            })
+            router.push('/login')
+        } else if (user?.role !== 'ADMIN' && user?.role !== undefined) {
+            toast({
+                title: 'Anda tidak memiliki akses ke halaman ini!',
+                status: 'error',
+                position: 'top',
+                duration: 4000,
+                isClosable: true,
+            })
+            router.push('/')
+        }
+    })
 
     const {
         control,
@@ -24,7 +48,11 @@ export const SecretTokenModule: React.FC = () => {
     const onSubmit = (data: FormData) => {
         setIsLoading(true)
         axios
-            .post('/api/secret-token', data)
+            .post('/api/secret-token', data, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+            })
             .then((response) => {
                 toast({
                     title: 'Berhasil menambahkan secret token!',
@@ -33,11 +61,12 @@ export const SecretTokenModule: React.FC = () => {
                     duration: 4000,
                     isClosable: true,
                 })
+
                 router.push('/secret-token')
             })
             .catch((error) => {
                 toast({
-                    title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+                    title: 'Gagal menambahkan secret token! Silakan coba lagi',
                     status: 'error',
                     position: 'top',
                     duration: 4000,
@@ -58,27 +87,30 @@ export const SecretTokenModule: React.FC = () => {
                 </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                <div className="my-20 mx-60">
+                <div className="flex justify-center my-20 mx-60">
                     <Controller
                         name="tokenName"
                         control={control}
                         rules={{
                             required: true,
                         }}
-                        render={({ field }) => <Input {...field} />}
+                        render={({ field }) => <Input {...field} placeholder="Enter your secret token"/>}
                     />
                     {errors.tokenName && (
                         <p className="text-sm text-red-400">{errors.tokenName.message}</p>
                     )}
                 </div>
-                <Button
-                    type="submit"
-                    colorScheme="teal"
-                    variant="solid"
-                    isLoading={isLoading}
-                >
-                    Submit
-                </Button>
+                <div className="flex justify-center pt-6">
+                    <Button
+                        type="submit"
+                        colorScheme="teal"
+                        variant="solid"
+                        isLoading={isLoading}
+                    >
+                        Submit
+                    </Button>
+                </div>
+
             </form>
             <div className="z-0 w-full">
                 <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
