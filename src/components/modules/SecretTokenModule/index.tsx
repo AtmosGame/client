@@ -76,7 +76,7 @@ export const SecretTokenModule: React.FC = () => {
         setIsLoading(false)
     }
     return (
-        <div className="relative h-screen text-white py-24 lg:py-36 overflow-hidden">
+        <div className=" h-screen text-white py-24 lg:py-36 overflow-hidden">
             <div className="relative max-w-[80%] mx-auto space-y-12 z-10">
                 <div className="flex justify-center gap-4 items-center select-none">
                     <h1 className="font-bold text-5xl">
@@ -86,7 +86,7 @@ export const SecretTokenModule: React.FC = () => {
                     </h1>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col z-20">
                 <div className="flex justify-center my-20 mx-60">
                     <Controller
                         name="tokenName"
@@ -110,6 +110,8 @@ export const SecretTokenModule: React.FC = () => {
                         Submit
                     </Button>
                 </div>
+
+                <Input />
 
             </form>
             <div className="z-0 w-full">

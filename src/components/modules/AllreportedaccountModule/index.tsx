@@ -44,7 +44,7 @@ export const AllreportedaccountModule: React.FC = () => {
         })
         .catch(function (error) {
           toast({
-            title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+            title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
             status: 'error',
             position: 'top',
             duration: 4000,
@@ -67,12 +67,6 @@ export const AllreportedaccountModule: React.FC = () => {
             List Akun yang Memiliki Laporan
           </h1>
           <CardReportedAccount listUser={listReportedAccount || []} />
-        </div>
-
-        <div className="z-0 w-full">
-          <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
-          <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
         </div>
       </>
       ):
