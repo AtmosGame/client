@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { ParamProps, ViewProfileProps } from './interface'
-import { ApplicatonsComponent, IconEditProfileComponent, IconReportComponent, MainComponent } from './elemets'
+import {
+  ApplicatonsComponent,
+  IconEditProfileComponent,
+  IconReportComponent,
+  MainComponent,
+} from './elemets'
 import { ChevronDown, ChevronUp } from '@icons'
 import { Tooltip } from '@material-tailwind/react'
 import { useToast } from '@chakra-ui/react'
@@ -62,14 +67,13 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
     <>
       <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
         <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
-          {username === user?.username ? 
-          (
-            <div className='absolute right-2 top-2'>
-              <IconEditProfileComponent url='#' />
+          {username === user?.username ? (
+            <div className="absolute right-2 top-2">
+              <IconEditProfileComponent url="#" />
             </div>
-          ):(
-            <div className='absolute right-2 top-2'>
-              <IconReportComponent url='#' />
+          ) : (
+            <div className="absolute right-2 top-2">
+              <IconReportComponent url="#" />
             </div>
           )}
 
