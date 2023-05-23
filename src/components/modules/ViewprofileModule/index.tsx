@@ -60,78 +60,80 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
-        <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
-          {username === user?.username ? 
-          (
-            <div className='absolute right-2 top-2'>
-              <IconEditProfileComponent url='#' />
-            </div>
-          ):(
-            <div className='absolute right-2 top-2'>
-              <IconReportComponent url='#' />
-            </div>
-          )}
+      <div className='relative h-screen overflow-hidden'>
+        <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
+          <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
+            {username === user?.username ? 
+            (
+              <div className='absolute right-2 top-2'>
+                <IconEditProfileComponent url='#' />
+              </div>
+            ):(
+              <div className='absolute right-2 top-2'>
+                <IconReportComponent url='#' />
+              </div>
+            )}
 
-          <div
-            className={`w-full h-full bg-gray-500/25 flex justify-center items-center px-4 md:px-8 py-4 ${
-              userView?.role === 'USER' ? `rounded-[12px]` : `rounded-t-[12px]`
-            }`}
-          >
-            <MainComponent user={userView} />
+            <div
+              className={`w-full h-full bg-gray-500/25 flex justify-center items-center px-4 md:px-8 py-4 ${
+                userView?.role === 'USER' ? `rounded-[12px]` : `rounded-t-[12px]`
+              }`}
+            >
+              <MainComponent user={userView} />
+            </div>
+
+            {userView?.role === 'DEVELOPER' ? (
+              <div className="w-full h-1/3 bg-gray-500 rounded-b-[12px] relative">
+                <h2 className="text-white text-base md:text-lg py-1 pl-5 md:pl-8">
+                  APPLICATIONS
+                </h2>
+
+                <Tooltip
+                  content="List Applications"
+                  className="bg-transparent text-yellow-200/75 text-sm font-bold"
+                >
+                  <button
+                    className="absolute right-5 bottom-4"
+                    onClick={changeActive}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-emerald-400 items-center flex justify-center">
+                      {dropdownActive ? (
+                        <ChevronUp
+                          size="w-6 h-6"
+                          fill="#212121"
+                          stroke="#212121"
+                        />
+                      ) : (
+                        <ChevronDown
+                          size="w-6 h-6"
+                          fill="#212121"
+                          stroke="#212121"
+                        />
+                      )}
+                    </div>
+                  </button>
+                </Tooltip>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
 
-          {userView?.role === 'DEVELOPER' ? (
-            <div className="w-full h-1/3 bg-gray-500 rounded-b-[12px] relative">
-              <h2 className="text-white text-base md:text-lg py-1 pl-5 md:pl-8">
-                APPLICATIONS
-              </h2>
-
-              <Tooltip
-                content="List Applications"
-                className="bg-transparent text-yellow-200/75 text-sm font-bold"
-              >
-                <button
-                  className="absolute right-5 bottom-4"
-                  onClick={changeActive}
-                >
-                  <div className="w-10 h-10 rounded-full bg-emerald-400 items-center flex justify-center">
-                    {dropdownActive ? (
-                      <ChevronUp
-                        size="w-6 h-6"
-                        fill="#212121"
-                        stroke="#212121"
-                      />
-                    ) : (
-                      <ChevronDown
-                        size="w-6 h-6"
-                        fill="#212121"
-                        stroke="#212121"
-                      />
-                    )}
-                  </div>
-                </button>
-              </Tooltip>
-            </div>
+          {dropdownActive ? (
+            <ApplicatonsComponent
+              applications={userView?.applications || ''}
+              username={userView?.username || ''}
+            />
           ) : (
             <></>
           )}
         </div>
 
-        {dropdownActive ? (
-          <ApplicatonsComponent
-            applications={userView?.applications || ''}
-            username={userView?.username || ''}
-          />
-        ) : (
-          <></>
-        )}
-      </div>
-
-      <div className="z-0 w-full">
-        <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
-        <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="z-0 w-full overflow-hidden">
+          <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
       </div>
     </>
   )
