@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Button, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
+import Cookies from 'js-cookie'
 
 export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
   const [reportedaccount, setReportedAccount] = useState<DetailReportedProps>()
@@ -33,7 +34,12 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
       router.push('/')
     } else if (user?.role === 'ADMIN') {
       axios
-      .get(`/api/report/${username}`)
+      .get(`/api/report/${username}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}}`
+          }
+        })
       .then(function (response) {
         const { username, totalReports, listReports } = response.data
         setReportedAccount({
@@ -76,11 +82,16 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
     } else {
       // do nothing
     }
-  }, [isUpdated, user])
+  }, [isUpdated, user, isAuthenticated])
 
   const handleApproveButton = () => {
     axios
-      .post(`/api/report/approve/${username}`)
+      .delete(`/api/report/approve/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}}`
+        }
+      })
       .then(function (response) {
         toast({
           title: `${response.data}`,
@@ -106,7 +117,12 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
   const handleRejectButton = (id: number) => {
     axios
-      .delete(`/api/report/reject/${username}/${id}`)
+      .delete(`/api/report/reject/${username}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}}`
+          }
+        })
       .then(function (response) {
         if (response.data.haveReport) {
           setIsUpdated(!isUpdated)
@@ -121,7 +137,6 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
           router.push('/allreportedaccount')
         }
-        console.log(response.data.haveReport)
       })
       .catch(function (error) {
         toast({
@@ -163,44 +178,52 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
   return (
     <>
       {user?.role === 'ADMIN'? (
-        <div className="flex flex-col items-center pt-5 gap-4 w-full">
-        <div className='pb-2'>
-          <Button variant='solid' className='bg-fuchsia-700 text-white' onClick={handleReportedAccountButton}>List Reported Account</Button>
-        </div>
-        <h1 className="font-bold text-2xl md:text-3xl text-white text-center">{`Detail Laporan Akun ${reportedaccount?.username}`}</h1>
-        <h2 className="font-bold text-lg md:text-xl text-fuchsia-500">{`Jumlah Laporan: ${reportedaccount?.totalReports}`}</h2>
-  
-        <div className="flex flex-col justify-center items-center gap-5 w-full px-5 md:px-0">
-          {reportedaccount?.listReports.map((report, key) => (
-            <div
-              className="w-full md:w-[350px] h-auto bg-gray-500/50 rounded-[10px] px-6 flex flex-col justify-center gap-3 py-4"
-              id={report.id.toString()}
-              key={key}
-            >
-              <span className="font-bold text-emerald-300/90 text-sm">
-                {`${formateDate(report.dateReport)}`}
-              </span>
-              <p className="break-all font-medium text-white text-lg">{report.information}</p>
-  
-              <div className="flex flex-row w-2/3 gap-4">
-                <button
-                  className="w-1/2 bg-green-400 rounded-[10px] py-1 items-center justify-center flex"
-                  onClick={() => handleApproveButton()}
-                >
-                  <span className="font-bold text-sm text-gray-750">Approve</span>
-                </button>
-  
-                <button
-                  className="w-1/2 bg-red-500/75 rounded-[10px] py-1 items-center justify-center flex"
-                  onClick={() => handleRejectButton(report.id)}
-                >
-                  <span className="font-bold text-sm text-gray-50">Reject</span>
-                </button>
-              </div>
+        <>
+          <div className="flex flex-col items-center pt-5 gap-4 w-full">
+            <div className='pb-2'>
+              <Button variant='solid' className='bg-fuchsia-700 text-white' onClick={handleReportedAccountButton}>List Reported Account</Button>
             </div>
-          ))}
-        </div>
-      </div>
+            <h1 className="font-bold text-2xl md:text-3xl text-white text-center">{`Detail Laporan Akun ${reportedaccount?.username}`}</h1>
+            <h2 className="font-bold text-lg md:text-xl text-fuchsia-500">{`Jumlah Laporan: ${reportedaccount?.totalReports}`}</h2>
+      
+            <div className="flex flex-col justify-center items-center gap-5 w-full px-5 md:px-0">
+              {reportedaccount?.listReports.map((report, key) => (
+                <div
+                  className="w-full md:w-[350px] h-auto bg-gray-500/50 rounded-[10px] px-6 flex flex-col justify-center gap-3 py-4"
+                  id={report.id.toString()}
+                  key={key}
+                >
+                  <span className="font-bold text-emerald-300/90 text-sm">
+                    {`${formateDate(report.dateReport)}`}
+                  </span>
+                  <p className="break-all font-medium text-white text-lg">{report.information}</p>
+      
+                  <div className="flex flex-row w-2/3 gap-4">
+                    <button
+                      className="w-1/2 bg-green-400 rounded-[10px] py-1 items-center justify-center flex"
+                      onClick={() => handleApproveButton()}
+                    >
+                      <span className="font-bold text-sm text-gray-750">Approve</span>
+                    </button>
+      
+                    <button
+                      className="w-1/2 bg-red-500/75 rounded-[10px] py-1 items-center justify-center flex"
+                      onClick={() => handleRejectButton(report.id)}
+                    >
+                      <span className="font-bold text-sm text-gray-50">Reject</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="z-0 w-full">
+            <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
+            <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+          </div>
+        </>
       ): (
         <></>
       )}

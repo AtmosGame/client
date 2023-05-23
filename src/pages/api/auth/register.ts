@@ -1,15 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { username } = req.query
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
   axios
-    .get(
-      `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/report/detail-account/${username}`,
+    .post(
+      `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/auth/register`,
       {
-        headers: {
-          Authorization: req.headers.authorization
-        }
+        username: req.body.username,
+        password: req.body.password,
+        role: req.body.role,
       }
     )
     .then((response) => {
@@ -33,3 +32,5 @@ export const config = {
     externalResolver: true,
   },
 }
+
+export default handler
