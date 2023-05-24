@@ -5,4 +5,6 @@ export * from './CartModule'
 export * from './LoginModule'
 export * from './SecretTokenModule'
 export * from './RegisterModule'
-
+export * from './HomeModule'
+export * from './AppModule'
+export * from './SubmitModule'
