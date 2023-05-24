@@ -43,7 +43,7 @@ export const AllreportedaccountModule: React.FC = () => {
         })
         .catch(function (error) {
           toast({
-            title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+            title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
             status: 'error',
             position: 'top',
             duration: 4000,
@@ -55,20 +55,21 @@ export const AllreportedaccountModule: React.FC = () => {
     } else {
       // do nothing
     }
-  }, [user])
+  }, [user, isAuthenticated])
 
   return (
     <>
-      {user?.role === 'ADMIN' ? (
+      {user?.role === 'ADMIN'? (
+      <>
         <div className="flex flex-col items-center pt-5 gap-4">
           <h1 className="font-bold text-2xl md:text-3xl text-white text-center px-2">
             List Akun yang Memiliki Laporan
           </h1>
           <CardReportedAccount listUser={listReportedAccount || []} />
         </div>
-      ) : (
-        <></>
-      )}
+      </>
+      ):
+      <></>}
     </>
   )
 }

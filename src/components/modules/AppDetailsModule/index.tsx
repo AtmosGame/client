@@ -6,12 +6,18 @@ import { DeveloperSection } from './sections/DeveloperSection'
 import { Spinner, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { useAuthContext } from '@contexts'
 
 export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   appId,
 }) => {
   const toast = useToast()
   const [ app, setApp ] = useState<App | null>(null)
+  const [ isPurchased, setIsPurchased ] = useState(false)
+  const [ downloadUrl, setDownloadUrl ] = useState('')
+  const [ isAppInCart, setIsAppInCart ] = useState(false)
+  
+  const { isAuthenticated } = useAuthContext()
   
   const followApp = () => {
     
@@ -31,6 +37,19 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   
   const removeAppFromCart = () => {
     
+  }
+  
+  const getAppStatus = (purchased: boolean, inCart: boolean) => {
+    if (!isAuthenticated) {
+      return 'login'
+    }
+    if (purchased) {
+      return 'download'
+    }
+    if (inCart) {
+      return 'remove-from-cart'
+    }
+    return 'add-to-cart'
   }
   
   useEffect(() => {
@@ -53,7 +72,45 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           isClosable: true,
         })
       })
-    
+    if (!isAuthenticated) return
+    axios
+      .get(`/api/apps/details/${appId}/download`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          },
+        })
+      .then((response) => {
+        const newIsPurchased = !response.data.installerUrl.includes('http')
+        setIsPurchased(newIsPurchased)
+        setDownloadUrl(response.data.installerUrl)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
+    axios
+      .get(`/api/apps/details/${appId}/in-cart`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          },
+        })
+      .then((response) => {
+        setIsAppInCart(response.data.isInCart)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika mendapatkan data keranjang',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
   }, [appId])
 
   if (!app) {
@@ -82,7 +139,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         <DownloadSection
           title={app.name}
           price={app.price}
-          status="download"
+          status={getAppStatus(isPurchased, isAppInCart)}
           version={app.version}
           onDownload={downloadApp}
           onCartAdd={addAppToCart}

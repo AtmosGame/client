@@ -3,17 +3,15 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   axios
-      .get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/apps/${req.query.id}`, {
+      .get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/download/${req.query.id}`, {
           headers: {
             Authorization: req.headers.authorization
           },
         })
       .then((response) => {
-        console.log(response)
         res.status(response.status).json(response.data)
       })
       .catch((error) => {
-        console.log(error)
         if (
           error.response != undefined &&
           error.response.status != undefined &&

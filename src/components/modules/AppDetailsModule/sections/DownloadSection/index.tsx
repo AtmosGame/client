@@ -37,15 +37,20 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
         <h2 className="text-2xl font-bold">Downloads</h2>
         <div className="p-2 flex flex-row justify-between items-center border-white border-2 rounded-xl">
           <span>{title} - Version {version}</span>
-          <Button
-            colorScheme={colorScheme()}
-            variant="solid"
-            onClick={onClick}
-          >
-            { status === 'download' && 'Download' }
-            { status === 'add-to-cart' && `Add to Cart: ${price}` }
-            { status === 'remove-from-cart' && `Remove from Cart: ${price}` }
-          </Button>
+          {
+            status !== 'login' ?
+            <Button
+              colorScheme={colorScheme()}
+              variant="solid"
+              onClick={onClick}
+            >
+              { status === 'download' && 'Download' }
+              { status === 'add-to-cart' && `Add to Cart: ${price}` }
+              { status === 'remove-from-cart' && `Remove from Cart: ${price}` }
+            </Button>
+            :
+            <span>Login to Download</span>
+          }
         </div>
       </div>
     </div>

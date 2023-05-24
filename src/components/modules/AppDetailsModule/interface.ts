@@ -3,8 +3,10 @@ export interface AppDetailsModuleProps {
 }
 
 export interface App {
-  title: string
+  id: string
+  name: string
   description: string
   price: number
   imageUrl: string
+  version: string
 }
