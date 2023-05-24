@@ -34,44 +34,30 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
       router.push('/')
     } else if (user?.role === 'ADMIN') {
       axios
-        .get(`/api/report/${username}`, {
+      .get(`/api/report/${username}`,
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}}`,
-          },
+            Authorization: `Bearer ${Cookies.get('token')}}`
+          }
         })
-        .then(function (response) {
-          const { username, totalReports, listReports } = response.data
-          setReportedAccount({
-            username: username,
-            totalReports: totalReports,
-            listReports: listReports,
-          })
+      .then(function (response) {
+        const { username, totalReports, listReports } = response.data
+        setReportedAccount({
+          username: username,
+          totalReports: totalReports,
+          listReports: listReports,
         })
-        .catch(function (error) {
-          if (
-            error.response != undefined &&
-            error.response.status != undefined
-          ) {
-            if (
-              error.response.status === 400 ||
-              error.response.status === 404
-            ) {
-              toast({
-                title: `${error.response.data.responseMessage}`,
-                status: 'error',
-                position: 'top',
-                duration: 4000,
-                isClosable: true,
-              })
-            } else {
-              toast({
-                title: 'Terjadi kesalahan! Segera hubungi Contact Person',
-                status: 'error',
-                position: 'top',
-                duration: 4000,
-                isClosable: true,
-              })
-            }
+      })
+      .catch(function (error) {
+        if (error.response != undefined && error.response.status != undefined) {
+          if (error.response.status === 400 || error.response.status === 404) {
+            toast({
+              title: `${error.response.data.responseMessage}`,
+              status: 'error',
+              position: 'top',
+              duration: 4000,
+              isClosable: true,
+            })
           } else {
             toast({
               title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
@@ -91,8 +77,8 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
           })
         }
 
-          router.push('/allreportedaccount')
-        })
+        router.push('/allreportedaccount')
+      })
     } else {
       // do nothing
     }
@@ -100,10 +86,11 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
   const handleApproveButton = () => {
     axios
-      .delete(`/api/report/approve/${username}`, {
+      .delete(`/api/report/approve/${username}`,
+      {
         headers: {
-          Authorization: `Bearer ${Cookies.get('token')}}`,
-        },
+          Authorization: `Bearer ${Cookies.get('token')}}`
+        }
       })
       .then(function (response) {
         toast({
@@ -150,11 +137,12 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
 
   const handleRejectButton = (id: number) => {
     axios
-      .delete(`/api/report/reject/${username}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}}`,
-        },
-      })
+      .delete(`/api/report/reject/${username}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}}`
+          }
+        })
       .then(function (response) {
         if (response.data.haveReport) {
           setIsUpdated(!isUpdated)
@@ -214,15 +202,15 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit',
+    second: '2-digit'
   }
 
-  function formateDate(dateReport: string) {
-    try {
+  function formateDate(dateReport: string){
+    try{
       return new Intl.DateTimeFormat('id-ID', optionsDate).format(
         new Date(dateReport)
       )
-    } catch (error) {
+    }catch (error) {
       // do nothing
     }
   }
