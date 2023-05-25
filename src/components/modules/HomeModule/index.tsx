@@ -1,11 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
 import Cookies from 'js-cookie'
 import Link from 'next/link'
-import { useToast } from '@chakra-ui/react'
 
 export const HomeModule: React.FC = () => {
   const { user } = useAuthContext()
