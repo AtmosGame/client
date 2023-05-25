@@ -65,23 +65,24 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
 
   return (
     <>
-      <div className='relative h-screen overflow-hidden'>
+      <div className="relative h-screen overflow-hidden">
         <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
           <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
-            {username === user?.username ? 
-            (
-              <div className='absolute right-2 top-2'>
-                <IconEditProfileComponent url='#' />
+            {username === user?.username ? (
+              <div className="absolute right-2 top-2">
+                <IconEditProfileComponent url="#" />
               </div>
-            ):(
-              <div className='absolute right-2 top-2'>
-                <IconReportComponent url='#' />
+            ) : (
+              <div className="absolute right-2 top-2">
+                <IconReportComponent url="#" />
               </div>
             )}
 
             <div
               className={`w-full h-full bg-gray-500/25 flex justify-center items-center px-4 md:px-8 py-4 ${
-                userView?.role === 'USER' ? `rounded-[12px]` : `rounded-t-[12px]`
+                userView?.role === 'USER'
+                  ? `rounded-[12px]`
+                  : `rounded-t-[12px]`
               }`}
             >
               <MainComponent user={userView} />

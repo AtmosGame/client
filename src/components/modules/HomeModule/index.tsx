@@ -7,7 +7,6 @@ import Cookies from 'js-cookie'
 import Link from 'next/link'
 import { useToast } from '@chakra-ui/react'
 
-
 export const HomeModule: React.FC = () => {
   const { user } = useAuthContext()
   const [notifications, setNotifications] = useState<any[]>([]);

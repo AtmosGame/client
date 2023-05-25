@@ -2,7 +2,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { id } = req.query
   const token = req.cookies.token // Assuming you have set up cookie parsing in your Next.js project
   const headers = { Authorization: `Bearer ${token}` }
