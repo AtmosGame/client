@@ -38,7 +38,7 @@ const Search = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="max-w-md mx-auto px-4 pt-40 pb-30">
       {user?.role === 'USER' ? (
         <div>
           <div className="flex items-center mb-4">
