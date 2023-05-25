@@ -126,7 +126,7 @@ export const AppDetailAdminModule: React.FC = () => {
                     try {
                       console.log('a')
                       console.log(user.role)
-                      const response = await axios.post(
+                      await axios.post(
                         `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/${id}/verify`,
                         {},
                         {

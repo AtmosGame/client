@@ -15,13 +15,15 @@ interface ProfileFormData {
   }
 
 export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
-  // eslint-disable-next-line no-unused-vars
-    const [userView, setUser] = useState<ViewProfileProps>()
-  const [dropdownActive, setDropdownActive] = useState<boolean>(false)
+  const [userView, setUser] = useState<ViewProfileProps>()
+  // const [dropdownActive, setDropdownActive] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   // eslint-disable-next-line no-unused-vars
   const { user, isAuthenticated } = useAuthContext()
+  
+  console.log(userView)
+  console.log(user)
 
   useEffect(() => {
     if(isAuthenticated===false){
@@ -37,9 +39,9 @@ export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
       onSubmit({profilePicture: '', bio: ''})
   }})
 
-  function changeActive() {
-    setDropdownActive(!dropdownActive)
-  }
+  // function changeActive() {
+  //   setDropdownActive(!dropdownActive)
+  // }
 
   const onSubmit= (data: ProfileFormData) => {
     axios.post(`/api/update-profile/${username}`,{
