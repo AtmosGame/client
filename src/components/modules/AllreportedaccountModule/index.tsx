@@ -61,7 +61,7 @@ export const AllreportedaccountModule: React.FC = () => {
     <>
       {user?.role === 'ADMIN' ? (
         <>
-          <div className="flex flex-col items-center pt-5 gap-4 pt-20">
+          <div className="flex flex-col items-center pt-24 gap-4">
             <h1 className="font-bold text-2xl md:text-3xl text-white text-center px-2">
               List Akun yang Memiliki Laporan
             </h1>
