@@ -117,17 +117,21 @@ export const AppDetailAdminModule: React.FC = () => {
           {/* Render verify button */}
           {app.verificationStatus === "UNVERIFIED" && (
             <div className="mb-4">
-              <Button
-                colorScheme="blue"
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
                 onClick={async () => {
                   try {
-                    console.log("a")
+                    console.log("a");
                     console.log(user.role);
-                    const response = await axios.post(`http://34.87.155.107/verification/${id}/verify`, {}, {
-                      headers: {
-                        Authorization: `Bearer ${Cookies.get('token')}`,
-                      },
-                    });
+                    const response = await axios.post(
+                      `http://34.87.155.107/verification/${id}/verify`,
+                      {},
+                      {
+                        headers: {
+                          Authorization: `Bearer ${Cookies.get('token')}`,
+                        },
+                      }
+                    );
                     console.log(response);
                     // Handle verification logic
                     toast({
@@ -143,16 +147,21 @@ export const AppDetailAdminModule: React.FC = () => {
                 }}
               >
                 Verify
-              </Button>
-              <Button
-                colorScheme="red"
+              </button>
+
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                 onClick={async () => {
                   try {
-                    const response = await axios.post(`http://34.87.155.107/verification/${id}/reject`, {}, {
-                      headers: {
-                        Authorization: `Bearer ${Cookies.get('token')}`,
-                      },
-                    });
+                    const response = await axios.post(
+                      `http://34.87.155.107/verification/${id}/reject`,
+                      {},
+                      {
+                        headers: {
+                          Authorization: `Bearer ${Cookies.get('token')}`,
+                        },
+                      }
+                    );
                     // Handle rejection logic
                     toast({
                       title: 'App rejected',
@@ -167,20 +176,20 @@ export const AppDetailAdminModule: React.FC = () => {
                 }}
               >
                 Reject
-              </Button>
+              </button>
             </div>
           )}
 
           {/* Render installer download button */}
-          <Button
-            colorScheme="blue"
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
             onClick={() => {
+              console.log(app.installerUrl);
               window.open(app.installerUrl, "_blank");
             }}
-            className="mb-4"
           >
             Download Installer
-          </Button>
+          </button>
         </div>
       </div>
     </div>
