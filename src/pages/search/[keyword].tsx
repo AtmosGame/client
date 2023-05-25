@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Input, Button, useToast } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import { useAuthContext } from '@contexts'
 import Cookies from 'js-cookie'
+import axios from 'axios';
 
 interface App {
   id: number;
@@ -45,13 +46,18 @@ const SearchResults = () => {
     const fetchSearchResults = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://34.87.155.107/search/${keyword}`);
-        if (response.ok) {
-          const data = await response.json();
-          setResults(data);
-        } else {
-          console.error('Failed to fetch search results:', response.status);
-        }
+        const response = await axios.get(`http://34.87.155.107/search/${keyword}`, {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            });
+
+        const data = response.data;
+        setResults(data);
+        console.log(data);
+        console.log("halo")
+        setIsLoading(false)
+
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
@@ -83,12 +89,24 @@ const SearchResults = () => {
             <ul className="space-y-4">
               {results.map((app) => (
                 <li key={app.id} className="bg-white p-4 rounded-md shadow-md">
-                  {/* Rest of the code */}
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => handleClickApp(app.id)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-medium">{app.name}</h3>
+                      <span className="text-gray-600">
+                        {app.price ? `$${app.price}` : 'Free'}
+                      </span>
+                    </div>
+                    <p className="text-gray-600">{app.description}</p>
+                  </div>
                 </li>
               ))}
             </ul>
             {results.length === 0 && (
-              <p className="text-gray-600 mt-4">No apps found.</p>
+          <p className="text-gray-600 mt-4">No apps found.</p>
+
             )}
             <Button
               colorScheme="teal"

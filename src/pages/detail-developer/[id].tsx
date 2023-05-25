@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
-import { useToast } from '@chakra-ui/react'
-
+import React from 'react'
 
 const DetailPage: React.FC = () => {
   const token = Cookies.get('token')
   const headers = { Authorization: `Bearer ${token}` }
-  const { user, isAuthenticated } = useAuthContext()
+  const { user } = useAuthContext()
+
 
   const router = useRouter()
   const { id } = router.query
@@ -38,46 +38,16 @@ const DetailPage: React.FC = () => {
   const [updateSuccess, setUpdateSuccess] = useState(false)
   const [updateError, setUpdateError] = useState('')
 
-  const toast = useToast()
-
-  // useEffect(() => {
-  //   if(isAuthenticated === false){
-  //     toast({
-  //       title: 'Anda harus login terlebih dahulu!',
-  //       status: 'error',
-  //       position: 'top',
-  //       duration: 4000,
-  //       isClosable: true,
-  //     })
-  //     router.push('/login')
-  //   }
-  //   else if (user?.role !== "DEVELOPER") {
-  //     toast({
-  //       title: 'ERROR!',
-  //       status: 'error',
-  //       position: 'top',
-  //       duration: 4000,
-  //       isClosable: true,
-  //     })
-  //     router.push('/')
-  //   }
-  // }, [router])
-  
-  
-  useEffect(() => {
-    if (id) {
-      fetchAppDetails()
-    }
-  }, [id])
-
   const fetchAppDetails = async () => {
     try {
       const response = await axios.get(`/api/app/${id}`, { headers })
       setAppDetails(response.data)
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching app details:', error)
     }
+  }
+  if(appDetails == null && user?.role === "DEVELOPER"){
+    fetchAppDetails();
   }
 
   const handleImageLoad = (id: string) => {
@@ -122,7 +92,11 @@ const DetailPage: React.FC = () => {
       const formData = new FormData()
       formData.append('file', installerValues.file)
       formData.append('version', installerValues.version)
-      console.log(formData)
+      console.log(process.env.NEXT_PUBLIC_APP_API_STORE_URL +
+        '/' +
+        id +
+        '/' +
+        'installer')
       await axios.put(
         process.env.NEXT_PUBLIC_APP_API_STORE_URL +
           '/' +
@@ -172,6 +146,8 @@ const DetailPage: React.FC = () => {
   if (!appDetails) {
     return <div>Loading...</div>
   }
+  
+
 
   const handleProfileClick = () => {
     setShowProfileForm((prevState) => !prevState)
@@ -200,9 +176,9 @@ const DetailPage: React.FC = () => {
     if (showInstallerForm) {
       setShowInstallerForm(false)
     }
-  }
-  
-  if (user?.role == 'DEVELOPER') {
+  } 
+
+  if (user?.role === 'DEVELOPER') {
     return (
       <div
         style={{
@@ -300,7 +276,9 @@ const DetailPage: React.FC = () => {
                     <input
                       type="file"
                       name="file"
+                      // @ts-ignore
                       onChange={(e) =>
+                        // @ts-ignore
                         setImageValues((prevValues) => ({
                           ...prevValues,
                           file: e.target.files && e.target.files[0],
@@ -421,6 +399,8 @@ const DetailPage: React.FC = () => {
                       type="file"
                       name="file"
                       onChange={(e) =>
+                        // @ts-ignore
+
                         setInstallerValues((prevValues) => ({
                           ...prevValues,
                           file: e.target.files && e.target.files[0],
@@ -490,7 +470,22 @@ const DetailPage: React.FC = () => {
       </div>
     )
   } else {
-    router.push('/')
+    return (
+      <>
+        <div
+          style={{
+            background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
+          }}
+          className="min-h-screen text-white"
+        >
+          <div className="container mx-auto py-8">
+            <h1 className="text-2xl font-bold mb-4 text-center text-red-500">
+              Forbidden
+            </h1>
+          </div>
+        </div>
+      </>
+    )
   }
 }
 

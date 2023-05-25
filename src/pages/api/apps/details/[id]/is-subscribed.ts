@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   axios
     .get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/notification/all-appDeveloper`, {
         headers: {
-          Authorization: req.headers.authorization
+          Authorization: req.headers.authorization,
         },
       })
     .then((response) => {

@@ -1,8 +1,7 @@
 import React from 'react'
-import { SearchModule } from '@modules'
-import type { NextPage } from 'next'
+
 import { useRouter } from 'next/router'
-import { Input, Button, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { useAuthContext } from '@contexts'
 import { useEffect, useState } from 'react';
 
@@ -10,7 +9,6 @@ import { useEffect, useState } from 'react';
 const Search = () => {
     const router = useRouter();
     const [keyword, setKeyword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
     const { user , isAuthenticated} = useAuthContext();
   

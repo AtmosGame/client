@@ -23,11 +23,15 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   
   const followApp = () => {
     axios
-      .post(`/api/apps/details/${appId}/subscribe`, {}, {
+      .post(
+        `/api/apps/details/${appId}/subscribe`,
+        {},
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
+            Authorization: `Bearer ${Cookies.get('token')}`,
           },
-        })
+        }
+      )
       .then(() => {
         setIsSubscribed(true)
       })
@@ -41,14 +45,18 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const unfollowApp = () => {
     axios
-      .post(`/api/apps/details/${appId}/unsubscribe`, {}, {
+      .post(
+        `/api/apps/details/${appId}/unsubscribe`,
+        {},
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
+            Authorization: `Bearer ${Cookies.get('token')}`,
           },
-        })
+        }
+      )
       .then(() => {
         setIsSubscribed(false)
       })
@@ -62,14 +70,18 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const addAppToCart = () => {
     axios
-      .post(`/api/apps/details/${appId}/add-to-cart`, {}, {
+      .post(
+        `/api/apps/details/${appId}/add-to-cart`,
+        {},
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
+            Authorization: `Bearer ${Cookies.get('token')}`,
           },
-        })
+        }
+      )
       .then(() => {
         setIsAppInCart(true)
       })
@@ -83,14 +95,14 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const removeAppFromCart = () => {
     axios
       .delete(`/api/apps/details/${appId}/remove-from-cart`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then(() => {
         setIsAppInCart(false)
       })
@@ -138,14 +150,14 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     }
     return 'add-to-cart'
   }
-  
+
   useEffect(() => {
     axios
       .get(`/api/apps/details/${appId}`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then((response) => {
         setApp(response.data)
       })
@@ -224,11 +236,11 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     return (
       <div className="w-screen h-screen flex justify-center items-center">
         <Spinner
-          thickness='4px'
-          speed='0.65s'
-          emptyColor='gray.200'
-          color='teal'
-          size='xl'
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="teal"
+          size="xl"
         />
       </div>
     )
