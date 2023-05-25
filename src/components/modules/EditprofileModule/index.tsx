@@ -19,6 +19,7 @@ export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
   // const [dropdownActive, setDropdownActive] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
+  // eslint-disable-next-line no-unused-vars
   const { user, isAuthenticated } = useAuthContext()
   
   console.log(userView)

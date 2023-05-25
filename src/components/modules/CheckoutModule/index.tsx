@@ -12,7 +12,7 @@ export const CheckoutModule: React.FC = () => {
   const [isExpired, setIsExpired] = useState<boolean>(false) // Added state variable
   const [listCheckoutDetails, setListCheckoutDetails] =
     useState<CheckoutInterface>()
-  const { user, isAuthenticated } = useAuthContext()
+  const { isAuthenticated } = useAuthContext()
   const toast = useToast()
   const router = useRouter()
 
