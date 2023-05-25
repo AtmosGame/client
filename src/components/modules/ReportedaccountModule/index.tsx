@@ -222,7 +222,7 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
     <>
       {user?.role === 'ADMIN' ? (
         <>
-          <div className="flex flex-col items-center pt-5 gap-4 w-full pt-24">
+          <div className="flex flex-col items-center gap-4 w-full pt-24">
             <div className="pb-2">
               <Button
                 variant="solid"
