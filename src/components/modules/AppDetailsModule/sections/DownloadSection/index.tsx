@@ -7,14 +7,12 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
   price,
   status,
   version,
-  onDownload,
+  downloadUrl,
   onCartAdd,
   onCartRemove,
 }) => {
   const onClick = () => {
-    if (status === 'download') {
-      onDownload()
-    } else if (status === 'add-to-cart') {
+    if (status === 'add-to-cart') {
       onCartAdd()
     } else if (status === 'remove-from-cart') {
       onCartRemove()
@@ -39,15 +37,28 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
           <span>{title} - Version {version}</span>
           {
             status !== 'login' ?
-            <Button
-              colorScheme={colorScheme()}
-              variant="solid"
-              onClick={onClick}
-            >
-              { status === 'download' && 'Download' }
-              { status === 'add-to-cart' && `Add to Cart: ${price}` }
-              { status === 'remove-from-cart' && `Remove from Cart: ${price}` }
-            </Button>
+            (
+              status !== 'download' ?
+              <Button
+                colorScheme={colorScheme()}
+                variant="solid"
+                onClick={onClick}
+              >
+                { status === 'add-to-cart' && `Add to Cart: ${price}` }
+                { status === 'remove-from-cart' && `Remove from Cart: ${price}` }
+              </Button>
+              :
+              <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
+                <Button
+                  colorScheme={colorScheme()}
+                  variant="solid"
+                  onClick={onClick}
+                >
+                  Download
+                </Button>
+              </a>
+            )
+            
             :
             <span>Login to Download</span>
           }

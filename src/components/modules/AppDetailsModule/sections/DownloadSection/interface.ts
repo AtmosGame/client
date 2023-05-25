@@ -3,7 +3,7 @@ export interface DownloadSectionProps {
   price: number
   status: "download" | "add-to-cart" | "remove-from-cart" | "login"
   version: string
-  onDownload: () => void
+  downloadUrl: string
   onCartAdd: () => void
   onCartRemove: () => void
 }

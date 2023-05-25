@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { App, AppDetailsModuleProps } from './interface'
 import { ThumbnailSection } from './sections'
 import { DownloadSection } from './sections/DownloadSection'
-import { DeveloperSection } from './sections/DeveloperSection'
 import { Spinner, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -16,27 +15,92 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   const [ isPurchased, setIsPurchased ] = useState(false)
   const [ downloadUrl, setDownloadUrl ] = useState('')
   const [ isAppInCart, setIsAppInCart ] = useState(false)
+  const [ isSubscribed, setIsSubscribed ] = useState(false)
   
   const { isAuthenticated } = useAuthContext()
   
   const followApp = () => {
-    
+    axios
+      .post(`/api/apps/details/${appId}/subscribe`, {}, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          },
+        })
+      .then(() => {
+        setIsSubscribed(true)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika melakukan subscribe',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
   }
   
   const unfollowApp = () => {
-    
-  }
-  
-  const downloadApp = () => {
-    
+    axios
+      .post(`/api/apps/details/${appId}/unsubscribe`, {}, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          },
+        })
+      .then(() => {
+        setIsSubscribed(false)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika melakukan unsubscribe',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
   }
   
   const addAppToCart = () => {
-    
+    axios
+      .post(`/api/apps/details/${appId}/add-to-cart`, {}, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          },
+        })
+      .then(() => {
+        setIsAppInCart(true)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika menambahkan aplikasi ke keranjang',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
   }
   
   const removeAppFromCart = () => {
-    
+    axios
+      .delete(`/api/apps/details/${appId}/remove-from-cart`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          },
+        })
+      .then(() => {
+        setIsAppInCart(false)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika menghapus aplikasi dari keranjang',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
   }
   
   const getAppStatus = (purchased: boolean, inCart: boolean) => {
@@ -53,7 +117,6 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   }
   
   useEffect(() => {
-    if (!appId) return
     axios
       .get(`/api/apps/details/${appId}`, {
           headers: {
@@ -72,7 +135,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           isClosable: true,
         })
       })
-    if (!isAuthenticated) return
+    if (!Cookies.get('token')) return
     axios
       .get(`/api/apps/details/${appId}/download`, {
           headers: {
@@ -80,7 +143,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           },
         })
       .then((response) => {
-        const newIsPurchased = !response.data.installerUrl.includes('http')
+        const newIsPurchased = response.data.installerUrl.includes('http')
         setIsPurchased(newIsPurchased)
         setDownloadUrl(response.data.installerUrl)
       })
@@ -100,7 +163,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           },
         })
       .then((response) => {
-        setIsAppInCart(response.data.isInCart)
+        setIsAppInCart(response.data.appInCart)
       })
       .catch(() => {
         toast({
@@ -111,7 +174,26 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           isClosable: true,
         })
       })
-  }, [appId])
+    axios
+      .get(`/api/apps/details/${appId}/is-subscribed`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        })
+      .then((response) => {
+        console.log(`Result: ${response.data.isSubscribed}`)
+        setIsSubscribed(response.data.isSubscribed)
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika mendapatkan status subscribe',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
+  }, [])
 
   if (!app) {
     return (
@@ -132,7 +214,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           title={app.name}
           description={app.description}
           imageUrl={app.imageUrl}
-          isFollowing={true}
+          isFollowing={isSubscribed}
           onFollow={followApp}
           onUnfollow={unfollowApp}
         />
@@ -141,13 +223,9 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           price={app.price}
           status={getAppStatus(isPurchased, isAppInCart)}
           version={app.version}
-          onDownload={downloadApp}
+          downloadUrl={downloadUrl}
           onCartAdd={addAppToCart}
           onCartRemove={removeAppFromCart}
-        />
-        <DeveloperSection
-          username="monolith_soft"
-          profilePictureUrl='https://support.musicgateway.com/wp-content/uploads/2021/07/monolith-soft-2.png'
         />
       </>
     )

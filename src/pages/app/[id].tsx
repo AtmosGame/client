@@ -1,11 +1,19 @@
 import React from 'react'
 import { AppDetailsModule } from '@modules'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
+import type { GetServerSideProps, NextPage } from 'next'
 
-const AppDetails: NextPage = () => {
-  const router = useRouter()  
-  return <AppDetailsModule appId={Number(router.query.id)} />
+// eslint-disable-next-line react/prop-types
+const AppDetails: NextPage<{id:string}> = ({ id }) => {
+  return <AppDetailsModule appId={Number(id)} />
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query
+  return {
+    props: {
+      id
+    }
+  }
 }
 
 export default AppDetails
