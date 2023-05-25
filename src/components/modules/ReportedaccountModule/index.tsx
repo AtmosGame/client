@@ -74,13 +74,22 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
             }
           } else {
             toast({
-              title: 'Terjadi kesalahan! Segera hubungi Contact Person',
+              title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
               status: 'error',
               position: 'top',
               duration: 4000,
               isClosable: true,
             })
           }
+        } else {
+          toast({
+            title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
+            status: 'error',
+            position: 'top',
+            duration: 4000,
+            isClosable: true,
+          })
+        }
 
           router.push('/allreportedaccount')
         })
@@ -106,13 +115,33 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
         })
       })
       .catch(function (error) {
-        toast({
-          title: 'Terjadi kesalahan! Segera hubungi Contact Person',
-          status: 'error',
-          position: 'top',
-          duration: 4000,
-          isClosable: true,
-        })
+        if (error.response != undefined && error.response.status != undefined) {
+          if (error.response.status === 400 || error.response.status === 404) {
+            toast({
+              title: `${error.response.data.responseMessage}`,
+              status: 'error',
+              position: 'top',
+              duration: 4000,
+              isClosable: true,
+            })
+          } else {
+            toast({
+              title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
+              status: 'error',
+              position: 'top',
+              duration: 4000,
+              isClosable: true,
+            })
+          }
+        } else {
+          toast({
+            title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
+            status: 'error',
+            position: 'top',
+            duration: 4000,
+            isClosable: true,
+          })
+        }
       })
       .finally(function () {
         router.push('/allreportedaccount')
@@ -142,13 +171,33 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
         }
       })
       .catch(function (error) {
-        toast({
-          title: 'Terjadi kesalahan! Segera hubungi Contact Person',
-          status: 'error',
-          position: 'top',
-          duration: 4000,
-          isClosable: true,
-        })
+        if (error.response != undefined && error.response.status != undefined) {
+          if (error.response.status === 400 || error.response.status === 404) {
+            toast({
+              title: `${error.response.data.responseMessage}`,
+              status: 'error',
+              position: 'top',
+              duration: 4000,
+              isClosable: true,
+            })
+          } else {
+            toast({
+              title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
+              status: 'error',
+              position: 'top',
+              duration: 4000,
+              isClosable: true,
+            })
+          }
+        } else {
+          toast({
+            title: 'Terjadi kesalahan! Mohon ulangi beberapa saat lagi',
+            status: 'error',
+            position: 'top',
+            duration: 4000,
+            isClosable: true,
+          })
+        }
 
         router.push('/allreportedaccount')
       })
@@ -231,12 +280,6 @@ export const ReportedaccountModule: React.FC<ParamProps> = ({ username }) => {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="z-0 w-full">
-            <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
-            <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
           </div>
         </>
       ) : (
