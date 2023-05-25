@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { useState, useRef } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
-import { useToast } from '@chakra-ui/react'
-
 
 export const SubmitModule: React.FC = () => {
   const [appName, setAppName] = useState('')
@@ -19,51 +17,9 @@ export const SubmitModule: React.FC = () => {
   const [error, setError] = useState('')
   const token = Cookies.get('token')
   const headers = { Authorization: `Bearer ${token}` }
-  const { user, isAuthenticated } = useAuthContext()
-  const toast = useToast()
-  const [userType, setUserType] = useState<string | null>(null)
-
+  const { user } = useAuthContext()
 
   const router = useRouter()
-
-  const isValidUserType = (type) => {
-    if (isAuthenticated === false) {
-      return false
-    }
-    return type === 'DEVELOPER'
-  }
-
-  useEffect(() => {
-    const getUserType = () => {
-      return user?.role
-    }
-
-    const userType = getUserType()
-    setUserType(userType)
-  }, [user])
-
-  useEffect(() => {
-    if(isAuthenticated === false){
-      toast({
-        title: 'Anda harus login terlebih dahulu!',
-        status: 'error',
-        position: 'top',
-        duration: 4000,
-        isClosable: true,
-      })
-      router.push('/login')
-    }
-    else if (userType && !isValidUserType(userType)) {
-      toast({
-        title: 'ERROR!',
-        status: 'error',
-        position: 'top',
-        duration: 4000,
-        isClosable: true,
-      })
-      router.push('/')
-    }
-  }, [userType, router])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -79,7 +35,7 @@ export const SubmitModule: React.FC = () => {
     formData.append('version', version)
     formData.append('price', price.toString())
     try {
-      const response = await axios.post(
+      await axios.post(
         process.env.NEXT_PUBLIC_APP_API_STORE_URL + '/submit',
         formData,
         { headers }
@@ -115,8 +71,15 @@ export const SubmitModule: React.FC = () => {
   // @ts-ignore
   if (user?.role === 'DEVELOPER') {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md">
+      <div
+        className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+        style={{
+          background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
+        }}
+      >
+        <div
+          className="max-w-md w-full bg-white p-6 rounded-md shadow-md"
+        >
           <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">
             Upload Form
           </h2>
@@ -264,7 +227,7 @@ export const SubmitModule: React.FC = () => {
                             className="sr-only"
                             // @ts-ignore
                             onChange={(e) =>
-                              setInstallerFile(e.target.files?.[0])
+                              setInstallerFile(e.target.files?.[0] || null)
                             }
                           />
                         </label>
@@ -355,7 +318,22 @@ export const SubmitModule: React.FC = () => {
         </div>
       </div>
     )
-  } else{
-    return <></>
+  } else {
+    return (
+      <>
+        <div
+          style={{
+            background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
+          }}
+          className="min-h-screen text-white"
+        >
+          <div className="container mx-auto py-8">
+            <h1 className="text-2xl font-bold mb-4 text-center text-red-500">
+              Forbidden
+            </h1>
+          </div>
+        </div>
+      </>
+    )
   }
 }
