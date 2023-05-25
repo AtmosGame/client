@@ -33,12 +33,11 @@ export const AllreportedaccountModule: React.FC = () => {
       router.push('/')
     } else if (user?.role === 'ADMIN') {
       axios
-        .get('/api/report', 
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}}`
-            }
-          })
+        .get('/api/report', {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}}`,
+          },
+        })
         .then(function (response) {
           setListReportedAccount(response.data.listUser)
         })
@@ -52,7 +51,7 @@ export const AllreportedaccountModule: React.FC = () => {
           })
 
           router.push('/')
-      })
+        })
     } else {
       // do nothing
     }

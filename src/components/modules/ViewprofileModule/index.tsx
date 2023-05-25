@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { ParamProps, ViewProfileProps } from './interface'
-import { ApplicatonsComponent, IconEditProfileComponent, IconReportComponent, MainComponent } from './elemets'
+import {
+  ApplicatonsComponent,
+  IconEditProfileComponent,
+  IconReportComponent,
+  MainComponent,
+} from './elemets'
 import { ChevronDown, ChevronUp } from '@icons'
 import { Tooltip } from '@material-tailwind/react'
 import { useToast } from '@chakra-ui/react'

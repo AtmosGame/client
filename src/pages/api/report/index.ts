@@ -7,8 +7,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/report/reported-account`,
       {
         headers: {
-          Authorization: req.headers.authorization
-        }
+          Authorization: req.headers.authorization,
+        },
       }
     )
     .then((response) => {
