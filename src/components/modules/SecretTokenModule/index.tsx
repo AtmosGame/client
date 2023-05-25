@@ -1,48 +1,55 @@
-import {Button, Input, useToast} from '@chakra-ui/react'
+import { Button, Input, useToast } from '@chakra-ui/react'
 import { useAuthContext } from '@contexts'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import React, {useEffect, useState} from 'react'
-import {Controller, useForm} from "react-hook-form";
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { FormData } from './interface'
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie'
 
 export const SecretTokenModule: React.FC = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const { user, isAuthenticated } = useAuthContext()
-    const toast = useToast()
-    const router = useRouter()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { user, isAuthenticated } = useAuthContext()
+  const toast = useToast()
+  const router = useRouter()
 
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      toast({
+        title: 'Anda harus login terlebih dahulu!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/login')
+    } else if (user?.role !== 'ADMIN' && user?.role !== undefined) {
+      toast({
+        title: 'Anda tidak memiliki akses ke halaman ini!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/')
+    }
+  })
 
-    useEffect(() => {
-        if (isAuthenticated === false) {
-            toast({
-                title: 'Anda harus login terlebih dahulu!',
-                status: 'error',
-                position: 'top',
-                duration: 4000,
-                isClosable: true,
-            })
-            router.push('/login')
-        } else if (user?.role !== 'ADMIN' && user?.role !== undefined) {
-            toast({
-                title: 'Anda tidak memiliki akses ke halaman ini!',
-                status: 'error',
-                position: 'top',
-                duration: 4000,
-                isClosable: true,
-            })
-            router.push('/')
-        }
-    })
-
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<FormData>({
-        defaultValues: {
-            tokenName: '',
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      tokenName: '',
+    },
+  })
+  const onSubmit = (data: FormData) => {
+    setIsLoading(true)
+    axios
+      .post('/api/secret-token', data, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
         },
     })
     const onSubmit = (data: FormData) => {
@@ -120,5 +127,12 @@ export const SecretTokenModule: React.FC = () => {
                 <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
             </div>
         </div>
-    )
+      </form>
+      <div className="z-0 w-full">
+        <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+    </div>
+  )
 }

@@ -1,3 +1,3 @@
 export interface FormData {
-    tokenName: string
+  tokenName: string
 }
