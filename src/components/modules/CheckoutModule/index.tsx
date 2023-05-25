@@ -1,6 +1,5 @@
 import { useToast } from '@chakra-ui/react'
 import { useAuthContext } from '@contexts'
-import { CheckoutCard } from '@elements'
 import { CreditCardIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -13,7 +12,7 @@ export const CheckoutModule: React.FC = () => {
   const [isExpired, setIsExpired] = useState<boolean>(false) // Added state variable
   const [listCheckoutDetails, setListCheckoutDetails] =
     useState<CheckoutInterface>()
-  const { user, isAuthenticated } = useAuthContext()
+  const { isAuthenticated } = useAuthContext()
   const toast = useToast()
   const router = useRouter()
 

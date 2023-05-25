@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ParamProps } from './interface';
 import { useAuthContext } from '@contexts';
-import Cookies from 'js-cookie';
 
 interface ReportFormData {
   information: string;

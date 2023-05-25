@@ -8,8 +8,6 @@ import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
 import { ParamProps, ViewProfileProps } from './interface'
 import Cookies from 'js-cookie'
-import { set } from 'react-hook-form'
-import image from 'next/image'
 
 interface ProfileFormData {
     profilePicture: string;
@@ -17,10 +15,12 @@ interface ProfileFormData {
   }
 
 export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
+  // eslint-disable-next-line no-unused-vars
     const [userView, setUser] = useState<ViewProfileProps>()
   const [dropdownActive, setDropdownActive] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
+  // eslint-disable-next-line no-unused-vars
   const { user, isAuthenticated } = useAuthContext()
 
   useEffect(() => {
