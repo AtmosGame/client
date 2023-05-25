@@ -3,15 +3,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   axios
-    .post(
-      `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/cart/${req.query.id}`,
-      {},
-      {
-        headers: {
-          Authorization: req.headers.authorization,
-        },
-      }
-    )
+    .get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/verification`, {
+      headers: {
+        Authorization: req.headers.authorization,
+      },
+    })
     .then((response) => {
       res.status(response.status).json(response.data)
     })

@@ -7,12 +7,10 @@ import Cookies from 'js-cookie'
 import Link from 'next/link'
 import { useToast } from '@chakra-ui/react'
 
-
 export const HomeModule: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
   const [userType, setUserType] = useState<string | null>(null)
   const toast = useToast()
-
 
   const router = useRouter()
 
@@ -33,7 +31,7 @@ export const HomeModule: React.FC = () => {
   }, [user])
 
   useEffect(() => {
-    if(isAuthenticated === false){
+    if (isAuthenticated === false) {
       toast({
         title: 'Anda harus login terlebih dahulu!',
         status: 'error',
@@ -42,8 +40,7 @@ export const HomeModule: React.FC = () => {
         isClosable: true,
       })
       router.push('/login')
-    }
-    else if (userType && !isValidUserType(userType)) {
+    } else if (userType && !isValidUserType(userType)) {
       toast({
         title: 'ERROR!',
         status: 'error',

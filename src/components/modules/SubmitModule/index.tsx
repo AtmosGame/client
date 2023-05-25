@@ -6,7 +6,6 @@ import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
 import { useToast } from '@chakra-ui/react'
 
-
 export const SubmitModule: React.FC = () => {
   const [appName, setAppName] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -22,7 +21,6 @@ export const SubmitModule: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
   const toast = useToast()
   const [userType, setUserType] = useState<string | null>(null)
-
 
   const router = useRouter()
 
@@ -43,7 +41,7 @@ export const SubmitModule: React.FC = () => {
   }, [user])
 
   useEffect(() => {
-    if(isAuthenticated === false){
+    if (isAuthenticated === false) {
       toast({
         title: 'Anda harus login terlebih dahulu!',
         status: 'error',
@@ -52,8 +50,7 @@ export const SubmitModule: React.FC = () => {
         isClosable: true,
       })
       router.push('/login')
-    }
-    else if (userType && !isValidUserType(userType)) {
+    } else if (userType && !isValidUserType(userType)) {
       toast({
         title: 'ERROR!',
         status: 'error',
@@ -355,7 +352,7 @@ export const SubmitModule: React.FC = () => {
         </div>
       </div>
     )
-  } else{
+  } else {
     return <></>
   }
 }

@@ -25,13 +25,13 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
             <p>{description}</p>
           </div>
           <div className="flex flex-row justify-end">
-          <Button
-            colorScheme={isFollowing ? "red" : "teal"}
-            variant="solid"
-            onClick={isFollowing ? onUnfollow : onFollow}
-          >
-            {isFollowing ? "Unfollow" : "Follow"}
-          </Button>
+            <Button
+              colorScheme={isFollowing ? 'red' : 'teal'}
+              variant="solid"
+              onClick={isFollowing ? onUnfollow : onFollow}
+            >
+              {isFollowing ? 'Unfollow' : 'Follow'}
+            </Button>
           </div>
         </div>
       </div>
