@@ -218,7 +218,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
             },
           })
         .then((response) => {
-          setIsSubscribed(response.data.isSubscribed)
+          setIsSubscribed(response.data.subscribedStatus)
         })
         .catch(() => {
           toast({
