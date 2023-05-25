@@ -8,8 +8,8 @@ import Cookies from 'js-cookie'
 
 export const VerificationSection: React.FC<VerificationSectionProps> = () => {
   const toast = useToast()
-  const [ appList, setAppList ] = useState<App[] | 'forbidden' | null>(null)
-  
+  const [appList, setAppList] = useState<App[] | 'forbidden' | null>(null)
+
   useEffect(() => {
     axios
       .get(`/api/verification`, {
@@ -34,7 +34,7 @@ export const VerificationSection: React.FC<VerificationSectionProps> = () => {
         }
       })
   }, [])
-  
+
   if (appList === null) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
@@ -56,23 +56,21 @@ export const VerificationSection: React.FC<VerificationSectionProps> = () => {
   } else {
     return (
       <div className="py-[24px] lg:px-[24px] w-full flex flex-col gap-2 items-center">
-        {
-          appList.map((app, index) => {
-            return (
-              <div className="w-full flex flex-row items-center justify-between p-3 text-white border-white border-2 rounded-xl" key={index}>
-                <span>{app.name}</span>
-                <Link href={`/verification/${app.id}`}>
-                  <Button
-                    colorScheme="teal"
-                    variant="solid"
-                  >
-                    Details
-                  </Button>
-                </Link>
-              </div>
-            )
-          })
-        }
+        {appList.map((app, index) => {
+          return (
+            <div
+              className="w-full flex flex-row items-center justify-between p-3 text-white border-white border-2 rounded-xl"
+              key={index}
+            >
+              <span>{app.name}</span>
+              <Link href={`/verification/${app.id}`}>
+                <Button colorScheme="teal" variant="solid">
+                  Details
+                </Button>
+              </Link>
+            </div>
+          )
+        })}
       </div>
     )
   }

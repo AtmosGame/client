@@ -6,18 +6,20 @@ import { Spinner, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
+import { useRouter } from 'next/router'
 
 export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   appId,
 }) => {
   const toast = useToast()
+  const router = useRouter()
+  const { user, isAuthenticated } = useAuthContext()
+
   const [app, setApp] = useState<App | null>(null)
   const [isPurchased, setIsPurchased] = useState(false)
   const [downloadUrl, setDownloadUrl] = useState('')
   const [isAppInCart, setIsAppInCart] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
-
-  const { isAuthenticated } = useAuthContext()
 
   const followApp = () => {
     axios
@@ -115,6 +117,27 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
       })
   }
 
+  const deleteApp = () => {
+    axios
+      .delete(`/api/apps/details/${appId}/delete`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
+      .then(() => {
+        router.replace('/app')
+      })
+      .catch(() => {
+        toast({
+          title: 'Terjadi kesalahan ketika menghapus aplikasi',
+          status: 'error',
+          position: 'top',
+          duration: 4000,
+          isClosable: true,
+        })
+      })
+  }
+
   const getAppStatus = (purchased: boolean, inCart: boolean) => {
     if (!isAuthenticated) {
       return 'login'
@@ -147,66 +170,68 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           isClosable: true,
         })
       })
-    if (!Cookies.get('token')) return
-    axios
-      .get(`/api/apps/details/${appId}/download`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
-      })
-      .then((response) => {
-        const newIsPurchased = response.data.installerUrl.includes('http')
-        setIsPurchased(newIsPurchased)
-        setDownloadUrl(response.data.installerUrl)
-      })
-      .catch(() => {
-        toast({
-          title:
-            'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
-          status: 'error',
-          position: 'top',
-          duration: 4000,
-          isClosable: true,
+    if (!isAuthenticated || !user || !app) return
+    if (app.userId !== user.id && user.role === 'USER') {
+      axios
+        .get(`/api/apps/details/${appId}/download`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
         })
-      })
-    axios
-      .get(`/api/apps/details/${appId}/in-cart`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
-      })
-      .then((response) => {
-        setIsAppInCart(response.data.appInCart)
-      })
-      .catch(() => {
-        toast({
-          title: 'Terjadi kesalahan ketika mendapatkan data keranjang',
-          status: 'error',
-          position: 'top',
-          duration: 4000,
-          isClosable: true,
+        .then((response) => {
+          const newIsPurchased = response.data.installerUrl.includes('http')
+          setIsPurchased(newIsPurchased)
+          setDownloadUrl(response.data.installerUrl)
         })
-      })
-    axios
-      .get(`/api/apps/details/${appId}/is-subscribed`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
-      })
-      .then((response) => {
-        console.log(`Result: ${response.data.isSubscribed}`)
-        setIsSubscribed(response.data.isSubscribed)
-      })
-      .catch(() => {
-        toast({
-          title: 'Terjadi kesalahan ketika mendapatkan status subscribe',
-          status: 'error',
-          position: 'top',
-          duration: 4000,
-          isClosable: true,
+        .catch(() => {
+          toast({
+            title:
+              'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
+            status: 'error',
+            position: 'top',
+            duration: 4000,
+            isClosable: true,
+          })
         })
-      })
-  }, [])
+      axios
+        .get(`/api/apps/details/${appId}/in-cart`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        })
+        .then((response) => {
+          setIsAppInCart(response.data.appInCart)
+        })
+        .catch(() => {
+          toast({
+            title: 'Terjadi kesalahan ketika mendapatkan data keranjang',
+            status: 'error',
+            position: 'top',
+            duration: 4000,
+            isClosable: true,
+          })
+        })
+      axios
+        .get(`/api/apps/details/${appId}/is-subscribed`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+            id: user?.id,
+          },
+        })
+        .then((response) => {
+          setIsSubscribed(response.data.subscribedStatus)
+        })
+        .catch(() => {
+          toast({
+            title: 'Terjadi kesalahan ketika mendapatkan status subscribe',
+            status: 'error',
+            position: 'top',
+            duration: 4000,
+            isClosable: true,
+          })
+        })
+    }
+  }, [isAuthenticated, user?.role, user?.id])
 
   if (!app) {
     return (
@@ -224,22 +249,27 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     return (
       <>
         <ThumbnailSection
+          appId={appId}
           title={app.name}
           description={app.description}
           imageUrl={app.imageUrl}
+          devId={app.userId}
           isFollowing={isSubscribed}
           onFollow={followApp}
           onUnfollow={unfollowApp}
+          onDelete={deleteApp}
         />
-        <DownloadSection
-          title={app.name}
-          price={app.price}
-          status={getAppStatus(isPurchased, isAppInCart)}
-          version={app.version}
-          downloadUrl={downloadUrl}
-          onCartAdd={addAppToCart}
-          onCartRemove={removeAppFromCart}
-        />
+        {!(user && (user.role === 'ADMIN' || app.userId == user.id)) && (
+          <DownloadSection
+            title={app.name}
+            price={app.price}
+            status={getAppStatus(isPurchased, isAppInCart)}
+            version={app.version}
+            downloadUrl={downloadUrl}
+            onCartAdd={addAppToCart}
+            onCartRemove={removeAppFromCart}
+          />
+        )}
       </>
     )
   }

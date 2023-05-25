@@ -2,21 +2,17 @@ import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-   
-    
   axios
     .post(
       `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/user/search-user`,
       {
         username: req.body.username,
-      }, 
-      
+      }
     )
     .then((response) => {
-      console.log(response);
-        
-      res.status(response.status).json(response.data)
+      console.log(response)
 
+      res.status(response.status).json(response.data)
     })
     .catch((error) => {
       if (
