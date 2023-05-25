@@ -61,7 +61,7 @@ export const AppDetailAdminModule: React.FC = () => {
           try {
             const token = Cookies.get('token');
             const headers = { Authorization: `Bearer ${token}` };
-            const response = await axios.get(`http://34.87.155.107/verification/${id}`, {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/verification/${id}`, {
               headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
               },
@@ -124,7 +124,7 @@ export const AppDetailAdminModule: React.FC = () => {
                     console.log("a");
                     console.log(user.role);
                     const response = await axios.post(
-                      `http://34.87.155.107/verification/${id}/verify`,
+                      `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/${id}/verify`,
                       {},
                       {
                         headers: {

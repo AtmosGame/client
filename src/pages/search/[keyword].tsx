@@ -46,7 +46,7 @@ const SearchResults = () => {
     const fetchSearchResults = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://34.87.155.107/search/${keyword}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/search/${keyword}`, {
               headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
               },
