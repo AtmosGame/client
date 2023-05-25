@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { useState, useRef } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
-import { useToast } from '@chakra-ui/react'
 
 export const SubmitModule: React.FC = () => {
   const [appName, setAppName] = useState('')

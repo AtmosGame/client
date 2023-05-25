@@ -134,7 +134,24 @@ export const CartModule: React.FC = () => {
             <button
               className="px-4 py-2 font-bold rounded-md bg-emerald-400 text-gray-900 active:bg-emerald-600 transition-all hover:shadow-lg hover:shadow-emerald-400/25"
               onClick={() => {
-                // TODO: Link to checkout page @Dimitri
+                if (listCartDetails?.cartDetailsData.length === 0) {
+                  toast({
+                    title: 'Keranjang masih kosong!',
+                    status: 'warning',
+                    position: 'top',
+                    duration: 4000,
+                    isClosable: true,
+                  })
+                } else {
+                  toast({
+                    title: 'Berhasil melakukan checkout!',
+                    status: 'success',
+                    position: 'top',
+                    duration: 4000,
+                    isClosable: true,
+                  })
+                  router.push('/cart/checkout')
+                }
               }}
             >
               Checkout
