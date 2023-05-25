@@ -11,21 +11,25 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   appId,
 }) => {
   const toast = useToast()
-  const [ app, setApp ] = useState<App | null>(null)
-  const [ isPurchased, setIsPurchased ] = useState(false)
-  const [ downloadUrl, setDownloadUrl ] = useState('')
-  const [ isAppInCart, setIsAppInCart ] = useState(false)
-  const [ isSubscribed, setIsSubscribed ] = useState(false)
-  
+  const [app, setApp] = useState<App | null>(null)
+  const [isPurchased, setIsPurchased] = useState(false)
+  const [downloadUrl, setDownloadUrl] = useState('')
+  const [isAppInCart, setIsAppInCart] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(false)
+
   const { isAuthenticated } = useAuthContext()
-  
+
   const followApp = () => {
     axios
-      .post(`/api/apps/details/${appId}/subscribe`, {}, {
+      .post(
+        `/api/apps/details/${appId}/subscribe`,
+        {},
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
+            Authorization: `Bearer ${Cookies.get('token')}`,
           },
-        })
+        }
+      )
       .then(() => {
         setIsSubscribed(true)
       })
@@ -39,14 +43,18 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const unfollowApp = () => {
     axios
-      .post(`/api/apps/details/${appId}/unsubscribe`, {}, {
+      .post(
+        `/api/apps/details/${appId}/unsubscribe`,
+        {},
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
+            Authorization: `Bearer ${Cookies.get('token')}`,
           },
-        })
+        }
+      )
       .then(() => {
         setIsSubscribed(false)
       })
@@ -60,14 +68,18 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const addAppToCart = () => {
     axios
-      .post(`/api/apps/details/${appId}/add-to-cart`, {}, {
+      .post(
+        `/api/apps/details/${appId}/add-to-cart`,
+        {},
+        {
           headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
+            Authorization: `Bearer ${Cookies.get('token')}`,
           },
-        })
+        }
+      )
       .then(() => {
         setIsAppInCart(true)
       })
@@ -81,14 +93,14 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const removeAppFromCart = () => {
     axios
       .delete(`/api/apps/details/${appId}/remove-from-cart`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then(() => {
         setIsAppInCart(false)
       })
@@ -102,7 +114,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const getAppStatus = (purchased: boolean, inCart: boolean) => {
     if (!isAuthenticated) {
       return 'login'
@@ -115,14 +127,14 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     }
     return 'add-to-cart'
   }
-  
+
   useEffect(() => {
     axios
       .get(`/api/apps/details/${appId}`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then((response) => {
         setApp(response.data)
       })
@@ -138,10 +150,10 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     if (!Cookies.get('token')) return
     axios
       .get(`/api/apps/details/${appId}/download`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then((response) => {
         const newIsPurchased = response.data.installerUrl.includes('http')
         setIsPurchased(newIsPurchased)
@@ -149,7 +161,8 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
       })
       .catch(() => {
         toast({
-          title: 'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
+          title:
+            'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
           status: 'error',
           position: 'top',
           duration: 4000,
@@ -158,10 +171,10 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
       })
     axios
       .get(`/api/apps/details/${appId}/in-cart`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then((response) => {
         setIsAppInCart(response.data.appInCart)
       })
@@ -176,10 +189,10 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
       })
     axios
       .get(`/api/apps/details/${appId}/is-subscribed`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then((response) => {
         console.log(`Result: ${response.data.isSubscribed}`)
         setIsSubscribed(response.data.isSubscribed)
@@ -199,11 +212,11 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     return (
       <div className="w-screen h-screen flex justify-center items-center">
         <Spinner
-          thickness='4px'
-          speed='0.65s'
-          emptyColor='gray.200'
-          color='teal'
-          size='xl'
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="teal"
+          size="xl"
         />
       </div>
     )

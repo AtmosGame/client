@@ -59,17 +59,18 @@ export const AllreportedaccountModule: React.FC = () => {
 
   return (
     <>
-      {user?.role === 'ADMIN'? (
-      <>
-        <div className="flex flex-col items-center pt-5 gap-4">
-          <h1 className="font-bold text-2xl md:text-3xl text-white text-center px-2">
-            List Akun yang Memiliki Laporan
-          </h1>
-          <CardReportedAccount listUser={listReportedAccount || []} />
-        </div>
-      </>
-      ):
-      <></>}
+      {user?.role === 'ADMIN' ? (
+        <>
+          <div className="flex flex-col items-center pt-5 gap-4">
+            <h1 className="font-bold text-2xl md:text-3xl text-white text-center px-2">
+              List Akun yang Memiliki Laporan
+            </h1>
+            <CardReportedAccount listUser={listReportedAccount || []} />
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   )
 }

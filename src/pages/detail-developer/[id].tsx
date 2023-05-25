@@ -5,7 +5,6 @@ import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
 import { useToast } from '@chakra-ui/react'
 
-
 const DetailPage: React.FC = () => {
   const token = Cookies.get('token')
   const headers = { Authorization: `Bearer ${token}` }
@@ -62,8 +61,7 @@ const DetailPage: React.FC = () => {
   //     router.push('/')
   //   }
   // }, [router])
-  
-  
+
   useEffect(() => {
     if (id) {
       fetchAppDetails()
@@ -201,7 +199,7 @@ const DetailPage: React.FC = () => {
       setShowInstallerForm(false)
     }
   }
-  
+
   if (user?.role == 'DEVELOPER') {
     return (
       <div
