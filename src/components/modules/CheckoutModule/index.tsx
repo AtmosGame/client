@@ -11,7 +11,8 @@ import { CheckoutInterface } from './interface'
 export const CheckoutModule: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isExpired, setIsExpired] = useState<boolean>(false) // Added state variable
-  const [listCheckoutDetails, setListCheckoutDetails] = useState<CheckoutInterface>()
+  const [listCheckoutDetails, setListCheckoutDetails] =
+    useState<CheckoutInterface>()
   const { user, isAuthenticated } = useAuthContext()
   const toast = useToast()
   const router = useRouter()
@@ -68,9 +69,13 @@ export const CheckoutModule: React.FC = () => {
       <div className="relative max-w-[80%] mx-auto space-y-12 z-10">
         <div className="flex gap-4 items-center select-none">
           <h1 className="font-bold text-5xl">
-            {isExpired ? "Expired" : "Menunggu Pembayaran..."} {/* Display "Expired" if isExpired is true */}
+            {isExpired ? 'Expired' : 'Menunggu Pembayaran...'}{' '}
+            {/* Display "Expired" if isExpired is true */}
           </h1>
-          {!isExpired && <CreditCardIcon className="h-12 w-12 animate-bounce" />} {/* Render the CreditCardIcon only if not expired */}
+          {!isExpired && (
+            <CreditCardIcon className="h-12 w-12 animate-bounce" />
+          )}{' '}
+          {/* Render the CreditCardIcon only if not expired */}
         </div>
       </div>
       <div className="z-0 w-full">

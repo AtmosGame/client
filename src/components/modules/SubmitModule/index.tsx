@@ -77,9 +77,7 @@ export const SubmitModule: React.FC = () => {
           background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
         }}
       >
-        <div
-          className="max-w-md w-full bg-white p-6 rounded-md shadow-md"
-        >
+        <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md">
           <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">
             Upload Form
           </h2>

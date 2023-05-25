@@ -14,13 +14,13 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   const toast = useToast()
   const router = useRouter()
   const { user, isAuthenticated } = useAuthContext()
-  
-  const [ app, setApp ] = useState<App | null>(null)
-  const [ isPurchased, setIsPurchased ] = useState(false)
-  const [ downloadUrl, setDownloadUrl ] = useState('')
-  const [ isAppInCart, setIsAppInCart ] = useState(false)
-  const [ isSubscribed, setIsSubscribed ] = useState(false)
-  
+
+  const [app, setApp] = useState<App | null>(null)
+  const [isPurchased, setIsPurchased] = useState(false)
+  const [downloadUrl, setDownloadUrl] = useState('')
+  const [isAppInCart, setIsAppInCart] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(false)
+
   const followApp = () => {
     axios
       .post(
@@ -116,14 +116,14 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const deleteApp = () => {
     axios
       .delete(`/api/apps/details/${appId}/delete`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`
-          },
-        })
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
       .then(() => {
         router.replace('/app')
       })
@@ -137,7 +137,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       })
   }
-  
+
   const getAppStatus = (purchased: boolean, inCart: boolean) => {
     if (!isAuthenticated) {
       return 'login'
@@ -174,10 +174,10 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     if (app.userId !== user.id && user.role === 'USER') {
       axios
         .get(`/api/apps/details/${appId}/download`, {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`
-            },
-          })
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        })
         .then((response) => {
           const newIsPurchased = response.data.installerUrl.includes('http')
           setIsPurchased(newIsPurchased)
@@ -185,7 +185,8 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
         .catch(() => {
           toast({
-            title: 'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
+            title:
+              'Terjadi kesalahan ketika mendapatkan data kepemilikan aplikasi',
             status: 'error',
             position: 'top',
             duration: 4000,
@@ -194,10 +195,10 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       axios
         .get(`/api/apps/details/${appId}/in-cart`, {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`
-            },
-          })
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        })
         .then((response) => {
           setIsAppInCart(response.data.appInCart)
         })
@@ -212,11 +213,11 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         })
       axios
         .get(`/api/apps/details/${appId}/is-subscribed`, {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`,
-              id: user?.id
-            },
-          })
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+            id: user?.id,
+          },
+        })
         .then((response) => {
           setIsSubscribed(response.data.isSubscribed)
         })
@@ -258,8 +259,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           onUnfollow={unfollowApp}
           onDelete={deleteApp}
         />
-        {
-          !(user && (user.role === 'ADMIN' || app.userId == user.id)) &&
+        {!(user && (user.role === 'ADMIN' || app.userId == user.id)) && (
           <DownloadSection
             title={app.name}
             price={app.price}
@@ -269,7 +269,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
             onCartAdd={addAppToCart}
             onCartRemove={removeAppFromCart}
           />
-        }
+        )}
       </>
     )
   }

@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { CheckoutCardProps } from './interface'
 
-export const CheckoutCard: React.FC<CheckoutCardProps> = ({
-  id
-}) => {
+export const CheckoutCard: React.FC<CheckoutCardProps> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (

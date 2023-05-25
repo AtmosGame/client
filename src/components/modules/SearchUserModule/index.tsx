@@ -113,7 +113,10 @@ export const SearchUserModule: React.FC = () => {
         )}
 
         {data.map((user: any, id: number) => (
-          <div key={id} className="w-full max-w-md px-4 bg-white border border-gray-800 rounded-lg shadow m:p-8 dark:bg-white-800 dark:border-gray-700 py-1 space-y-2 my-2 z-50 active:bg-white-600 transition-all hover:shadow-lg hover:shadow-white-400/25 ">
+          <div
+            key={id}
+            className="w-full max-w-md px-4 bg-white border border-gray-800 rounded-lg shadow m:p-8 dark:bg-white-800 dark:border-gray-700 py-1 space-y-2 my-2 z-50 active:bg-white-600 transition-all hover:shadow-lg hover:shadow-white-400/25 "
+          >
             {' '}
             <Link href={`/viewprofile/${user.username}`}>
               <div className="flow-root  z-50">

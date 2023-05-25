@@ -3,31 +3,33 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = Number(req.headers.id)
-  
+
   axios
-    .get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/notification/all-appDeveloper`, {
+    .get(
+      `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/notification/all-appDeveloper`,
+      {
         headers: {
           Authorization: req.headers.authorization,
         },
-      })
+      }
+    )
     .then((response) => {
-      const apps = response.data;
-      
+      const apps = response.data
+
       for (let i = 0; i < apps.length; i++) {
-        
         if (apps[i].id == req.query.id) {
           const subscribers = apps[i].subscribers
-          
-          let flag = false;
+
+          let flag = false
           for (let j = 0; j < subscribers.length; j++) {
             if (subscribers[j].userId == userId) {
-              flag = true;
-              break;
+              flag = true
+              break
             }
           }
-          
+
           res.status(response.status).json({ isSubscribed: flag })
-          break;
+          break
         }
       }
     })

@@ -10,7 +10,6 @@ const DetailPage: React.FC = () => {
   const headers = { Authorization: `Bearer ${token}` }
   const { user } = useAuthContext()
 
-
   const router = useRouter()
   const { id } = router.query
   const [appDetails, setAppDetails] = useState<any>(null)
@@ -46,8 +45,8 @@ const DetailPage: React.FC = () => {
       console.error('Error fetching app details:', error)
     }
   }
-  if(appDetails == null && user?.role === "DEVELOPER"){
-    fetchAppDetails();
+  if (appDetails == null && user?.role === 'DEVELOPER') {
+    fetchAppDetails()
   }
 
   const handleImageLoad = (id: string) => {
@@ -92,11 +91,9 @@ const DetailPage: React.FC = () => {
       const formData = new FormData()
       formData.append('file', installerValues.file)
       formData.append('version', installerValues.version)
-      console.log(process.env.NEXT_PUBLIC_APP_API_STORE_URL +
-        '/' +
-        id +
-        '/' +
-        'installer')
+      console.log(
+        process.env.NEXT_PUBLIC_APP_API_STORE_URL + '/' + id + '/' + 'installer'
+      )
       await axios.put(
         process.env.NEXT_PUBLIC_APP_API_STORE_URL +
           '/' +
@@ -146,8 +143,6 @@ const DetailPage: React.FC = () => {
   if (!appDetails) {
     return <div>Loading...</div>
   }
-  
-
 
   const handleProfileClick = () => {
     setShowProfileForm((prevState) => !prevState)
@@ -176,7 +171,7 @@ const DetailPage: React.FC = () => {
     if (showInstallerForm) {
       setShowInstallerForm(false)
     }
-  } 
+  }
 
   if (user?.role === 'DEVELOPER') {
     return (
