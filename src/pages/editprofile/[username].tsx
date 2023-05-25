@@ -2,7 +2,7 @@ import React from 'react'
 import { EditprofileModule } from '@modules'
 import { useRouter } from 'next/router'
 
-const Viewprofile = () => {
+const Editprofile = () => {
   const router = useRouter()
   const { username } = router.query
 
@@ -17,4 +17,4 @@ const Viewprofile = () => {
   )
 }
 
-export default Viewprofile
+export default Editprofile

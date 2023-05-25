@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useToast } from '@chakra-ui/react'
+import {
+  Button,
+  useToast,
+} from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
 import { ParamProps, ViewProfileProps } from './interface'
 import Cookies from 'js-cookie'
 import { set } from 'react-hook-form'
+import image from 'next/image'
 
 interface ProfileFormData {
     profilePicture: string;
@@ -29,23 +33,8 @@ export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
             isClosable: true,
           })
           router.push('/login')
-    } else if(user?.role === 'ADMIN' || user?.role === undefined){
-        toast({
-            title: 'Anda tidak dapat mengakses halaman ini!',
-            status: 'error',
-            position: 'top',
-            duration: 4000,
-            isClosable: true,
-          })
-          console.log(user?.role)
-          router.push('/')
     } else{
-    //     axios.post(`/api/update-profile/${username}`,{
-    //         headers: {
-    //             Authorization: `Bearer ${Cookies.get('token')}}`},
-    //     }).then(function (response){
-    //         setUser(response.data)
-    // })
+      onSubmit({profilePicture: '', bio: ''})
   }})
 
   function changeActive() {
@@ -72,78 +61,50 @@ export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
 
   return (
     <>
-    <div className="border-b-2 block md:flex">
-      <div className="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
-      <div className="rounded  shadow p-6">
-        <div className="pb-6">
-          <label htmlFor="name" className="font-semibold text-gray-700 block pb-1">Name</label>
-          <div className="flex">
-            <input disabled id="username" className="border-1  rounded-r px-4 py-2 w-full" type="text" value="Jane Name" />
-          </div>
+    <div className="relative h-screen text-white py-24 lg:py-36 overflow-hidden">
+      <div className="relative max-w-[80%] mx-auto space-y-12 z-10">
+        <div className="flex gap-4 items-center select-none">
+          <h1 className="font-bold text-5xl">Edit Profile
+          </h1>
         </div>
-        <div className="pb-4">
-          <label htmlFor="about" className="font-semibold text-gray-700 block pb-1">Email</label>
-          <input disabled id="email" className="border-1  rounded-r px-4 py-2 w-full" type="email" value="example@example.com" />
-          <span className="text-gray-600 pt-4 block opacity-70">Personal login information of your account</span>
-        </div>
+        <h1 className="font-bold text-5xl">{username}
+          </h1>
+      </div>
+      <div className="z-0 w-full">
+        <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-[500px] h-[500px] bg-emerald-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+        <table className="flex justify-center">
+          <tbody>
+              <tr>
+                <td className="text-slate-50 mt-2">Profile Picture</td>
+              </tr>
+              <tr>
+                  <div className="items-center justify-center flex flex-col mb-1 mt-1">
+                  </div>
+                  <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file"></input>
+              </tr>
+              <tr>
+                  <td className="text-slate-50">Bio</td>
+              </tr>
+              <tr>
+                  <td><input type="text" name="bio" placeholder="Bio" className="form-control text-sm rounded-lg p-3 w-full text-black"></input></td>
+              </tr>
+
+              <div className="flex justify-center pt-6">
+              <Button
+                type="submit"
+                colorScheme="teal"
+                variant="solid"
+              >
+                Edit Profile
+              </Button>
+            </div>
+
+          </tbody>
+        </table>
       </div>
     </div>
-  </div>
-      {/* <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
-        <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
-          {username === user?.username ? 
-          (
-            <div className='absolute right-2 top-2'>
-            </div>
-          ):(
-            <div className='absolute right-2 top-2'>
-            </div>
-          )}
-
-          <div
-            className={`w-full h-full bg-gray-500/25 flex justify-center items-center px-4 md:px-8 py-4 ${
-              userView?.role === 'USER' ? `rounded-[12px]` : `rounded-t-[12px]`
-            }`}
-          >
-          </div>
-
-          {userView?.role === 'DEVELOPER' ? (
-            <div className="w-full h-1/3 bg-gray-500 rounded-b-[12px] relative">
-              <h2 className="text-white text-base md:text-lg py-1 pl-5 md:pl-8">
-                APPLICATIONS
-              </h2>
-
-              <Tooltip
-                content="List Applications"
-                className="bg-transparent text-yellow-200/75 text-sm font-bold"
-              >
-                <button
-                  className="absolute right-5 bottom-4"
-                  onClick={changeActive}
-                >
-                  <div className="w-10 h-10 rounded-full bg-emerald-400 items-center flex justify-center">
-                    {dropdownActive ? (
-                      <ChevronUp
-                        size="w-6 h-6"
-                        fill="#212121"
-                        stroke="#212121"
-                      />
-                    ) : (
-                      <ChevronDown
-                        size="w-6 h-6"
-                        fill="#212121"
-                        stroke="#212121"
-                      />
-                    )}
-                  </div>
-                </button>
-              </Tooltip>
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-      </div> */}
     </>
   )
 }

@@ -1,9 +1,11 @@
 import { Button, Input, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ParamProps } from './interface';
+import { useAuthContext } from '@contexts';
+import Cookies from 'js-cookie';
 
 interface ReportFormData {
   information: string;
@@ -13,6 +15,7 @@ export const ReportAccountModule: React.FC<ParamProps> = ({ username, usernameRe
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
   const router = useRouter();
+  const { user, isAuthenticated } = useAuthContext()
 
   const {
     control,
@@ -24,10 +27,34 @@ export const ReportAccountModule: React.FC<ParamProps> = ({ username, usernameRe
     },
   });
 
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      toast({
+        title: 'Anda harus login terlebih dahulu!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/login')
+    } else if (user?.role === 'ADMIN' && user?.role === undefined) {
+      toast({
+        title: 'Anda tidak memiliki akses ke halaman ini!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push(`/viewprofile/${usernameReported}`)
+    } else {
+      onSubmit({ information: '' })
+    }
+  }, [user, isAuthenticated])
+
   const onSubmit = (data: ReportFormData) => {
     setIsLoading(true);
     axios
-      .post(`/api/reportaccount/${username}/${usernameReported}`, data)
+      .post(`/api/report-user/${username}/${usernameReported}`, data)
       .then((response) => {
         toast({
           title: 'Berhasil report!',
@@ -54,11 +81,11 @@ export const ReportAccountModule: React.FC<ParamProps> = ({ username, usernameRe
   };
 
   return (
-    <div className="min-h-screen text-white py-36">
-      <div className="mx-auto max-w-[80%]">
+    <div className="relative h-screen text-white py-24 lg:py-36 overflow-hidden">
+      <div className="mx-auto max-w-[80%] z-50">
+        <h1 className='flex items-center justify-center text-2xl'>Report Account</h1>
+          <h1 className='flex items-center justify-center '>{usernameReported}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <div class="grid h-screen place-items-center">
-          <h1>Report account {usernameReported}</h1>
           <div>
             <label>Information</label>
             <Controller
@@ -72,7 +99,6 @@ export const ReportAccountModule: React.FC<ParamProps> = ({ username, usernameRe
             {errors.information && (
               <p className="text-sm text-red-400">{errors.information.message}</p>
             )}
-          </div>
           <Button type="submit" colorScheme="teal" variant="solid" isLoading={isLoading}>
             Report
           </Button>
