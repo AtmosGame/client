@@ -4,13 +4,11 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
 import React from 'react'
-import { useToast } from '@chakra-ui/react'
 
 const DetailPage: React.FC = () => {
   const token = Cookies.get('token')
   const headers = { Authorization: `Bearer ${token}` }
   const { user } = useAuthContext()
-  const toast = useToast()
 
 
   const router = useRouter()

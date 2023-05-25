@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Input, Button, useToast } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import { useAuthContext } from '@contexts'
 import Cookies from 'js-cookie'
 import axios from 'axios';

@@ -1,8 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Button, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { useAuthContext } from '@contexts'
 import Cookies from 'js-cookie'
 import axios from 'axios';
@@ -59,8 +58,6 @@ export const AppDetailAdminModule: React.FC = () => {
       } else if (user?.role === 'ADMIN') {
         const fetchData = async () => {
           try {
-            const token = Cookies.get('token');
-            const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.get(`http://34.87.155.107/verification/${id}`, {
               headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
@@ -123,7 +120,7 @@ export const AppDetailAdminModule: React.FC = () => {
                   try {
                     console.log("a");
                     console.log(user.role);
-                    const response = await axios.post(
+                    await axios.post(
                       `http://34.87.155.107/verification/${id}/verify`,
                       {},
                       {
@@ -132,7 +129,6 @@ export const AppDetailAdminModule: React.FC = () => {
                         },
                       }
                     );
-                    console.log(response);
                     // Handle verification logic
                     toast({
                       title: 'App verified',
@@ -153,7 +149,7 @@ export const AppDetailAdminModule: React.FC = () => {
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                 onClick={async () => {
                   try {
-                    const response = await axios.post(
+                    await axios.post(
                       `http://34.87.155.107/verification/${id}/reject`,
                       {},
                       {
