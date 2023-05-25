@@ -58,7 +58,9 @@ export const AppDetailAdminModule: React.FC = () => {
       } else if (user?.role === 'ADMIN') {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`http://34.87.155.107/verification/${id}`, {
+            const token = Cookies.get('token');
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/verification/${id}`, {
               headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
               },
@@ -120,8 +122,8 @@ export const AppDetailAdminModule: React.FC = () => {
                   try {
                     console.log("a");
                     console.log(user.role);
-                    await axios.post(
-                      `http://34.87.155.107/verification/${id}/verify`,
+                    const response = await axios.post(
+                      `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/${id}/verify`,
                       {},
                       {
                         headers: {
