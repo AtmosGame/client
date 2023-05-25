@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button, Input, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';

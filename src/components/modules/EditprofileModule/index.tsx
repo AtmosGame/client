@@ -8,8 +8,6 @@ import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
 import { ParamProps, ViewProfileProps } from './interface'
 import Cookies from 'js-cookie'
-import { set } from 'react-hook-form'
-import image from 'next/image'
 
 interface ProfileFormData {
     profilePicture: string;
@@ -17,11 +15,14 @@ interface ProfileFormData {
   }
 
 export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
-    const [userView, setUser] = useState<ViewProfileProps>()
-  const [dropdownActive, setDropdownActive] = useState<boolean>(false)
+  const [userView, setUser] = useState<ViewProfileProps>()
+  // const [dropdownActive, setDropdownActive] = useState<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const { user, isAuthenticated } = useAuthContext()
+  
+  console.log(userView)
+  console.log(user)
 
   useEffect(() => {
     if(isAuthenticated===false){
@@ -37,9 +38,9 @@ export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
       onSubmit({profilePicture: '', bio: ''})
   }})
 
-  function changeActive() {
-    setDropdownActive(!dropdownActive)
-  }
+  // function changeActive() {
+  //   setDropdownActive(!dropdownActive)
+  // }
 
   const onSubmit= (data: ProfileFormData) => {
     axios.post(`/api/update-profile/${username}`,{

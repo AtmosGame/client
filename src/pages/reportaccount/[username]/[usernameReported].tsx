@@ -1,5 +1,4 @@
 import React from 'react'
-import type { NextPage } from 'next'
 import { ReportAccountModule } from '@modules'
 import { useRouter } from 'next/router'
 
