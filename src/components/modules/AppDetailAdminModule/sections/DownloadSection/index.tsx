@@ -20,7 +20,7 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
       onCartRemove()
     }
   }
-  
+
   const colorScheme = () => {
     if (status === 'download') {
       return 'teal'
@@ -30,21 +30,19 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
       return 'red'
     }
   }
-  
+
   return (
     <div className="pt-[24px] w-full flex justify-center items-center">
       <div className="w-full lg:w-[960px] p-3 text-white border-white border-2 rounded-xl overflow-hidden flex flex-col gap-2">
         <h2 className="text-2xl font-bold">Downloads</h2>
         <div className="p-2 flex flex-row justify-between items-center border-white border-2 rounded-xl">
-          <span>{title} - Version {version}</span>
-          <Button
-            colorScheme={colorScheme()}
-            variant="solid"
-            onClick={onClick}
-          >
-            { status === 'download' && 'Download' }
-            { status === 'add-to-cart' && `Add to Cart: ${price}` }
-            { status === 'remove-from-cart' && `Remove from Cart: ${price}` }
+          <span>
+            {title} - Version {version}
+          </span>
+          <Button colorScheme={colorScheme()} variant="solid" onClick={onClick}>
+            {status === 'download' && 'Download'}
+            {status === 'add-to-cart' && `Add to Cart: ${price}`}
+            {status === 'remove-from-cart' && `Remove from Cart: ${price}`}
           </Button>
         </div>
       </div>

@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export const HomeModule: React.FC = () => {
   const { user } = useAuthContext()
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([])
   const [showNotifications, setShowNotifications] = useState(false)
 
   useEffect(() => {
@@ -20,10 +20,12 @@ export const HomeModule: React.FC = () => {
             '/notification/all-notification-by-id',
           { headers }
         )
-        const formattedNotifications = response.data.map((notification: { timestamp: string | number | Date }) => ({
-          ...notification,
-          timestamp: formatTimestamp(notification.timestamp),
-        }))
+        const formattedNotifications = response.data.map(
+          (notification: { timestamp: string | number | Date }) => ({
+            ...notification,
+            timestamp: formatTimestamp(notification.timestamp),
+          })
+        )
         setNotifications(formattedNotifications)
       } catch (error) {
         console.error(error)
@@ -63,8 +65,8 @@ export const HomeModule: React.FC = () => {
     }
   }
 
-  const [appDetails, setAppDetails] = useState<any[] | null>(null);
-  const [loadedImages, setLoadedImages] = useState<any[]>([]);
+  const [appDetails, setAppDetails] = useState<any[] | null>(null)
+  const [loadedImages, setLoadedImages] = useState<any[]>([])
 
   useEffect(() => {
     // Fetch data from localhost:8080/all
@@ -75,10 +77,8 @@ export const HomeModule: React.FC = () => {
   }, [])
 
   const handleImageLoad = (id: any) => {
-    setLoadedImages((prevLoadedImages: any[]) => [...prevLoadedImages, id]);
-  };
-  
-  
+    setLoadedImages((prevLoadedImages: any[]) => [...prevLoadedImages, id])
+  }
 
   const renderAdminContent = () => {
     if (!appDetails) {
@@ -231,8 +231,7 @@ export const HomeModule: React.FC = () => {
           background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
         }}
         className="min-h-screen text-white"
-      >
-      </div>
+      ></div>
     )
   }
   let content = emptyContent()

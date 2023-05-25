@@ -34,9 +34,6 @@ export const LoginModule: React.FC = () => {
     axios
       .post('/api/auth/login', data)
       .then((response) => {
-      
-
-
         Cookies.set('token', response.data.token)
         toast({
           title: 'Login successfully!',
