@@ -5,10 +5,14 @@ import { useRouter } from 'next/router'
 import { useAuthContext } from '@contexts'
 import Cookies from 'js-cookie'
 import Link from 'next/link'
+import { useToast } from '@chakra-ui/react'
+
 
 export const HomeModule: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
   const [userType, setUserType] = useState<string | null>(null)
+  const toast = useToast()
+
 
   const router = useRouter()
 
@@ -21,7 +25,6 @@ export const HomeModule: React.FC = () => {
 
   useEffect(() => {
     const getUserType = () => {
-      console.log(user?.role)
       return user?.role
     }
 
@@ -30,8 +33,24 @@ export const HomeModule: React.FC = () => {
   }, [user])
 
   useEffect(() => {
-    // Redirect to the login page if the user type is not valid
-    if (userType && !isValidUserType(userType)) {
+    if(isAuthenticated === false){
+      toast({
+        title: 'Anda harus login terlebih dahulu!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/login')
+    }
+    else if (userType && !isValidUserType(userType)) {
+      toast({
+        title: 'ERROR!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
       router.push('/')
     }
   }, [userType, router])
@@ -133,7 +152,7 @@ export const HomeModule: React.FC = () => {
           {appDetails.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {appDetails.map((app) => (
-                <Link key={app.id} href={`/detaildeveloper/${app.id}`}>
+                <Link key={app.id} href={`/detail-developer/${app.id}`}>
                   <div
                     style={{ backgroundColor: '#203040' }}
                     className="rounded-lg shadow-md p-4 flex flex-col items-start justify-between cursor-pointer"

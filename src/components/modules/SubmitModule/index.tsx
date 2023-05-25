@@ -4,6 +4,8 @@ import { useState, useRef } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
+import { useToast } from '@chakra-ui/react'
+
 
 export const SubmitModule: React.FC = () => {
   const [appName, setAppName] = useState('')
@@ -18,7 +20,9 @@ export const SubmitModule: React.FC = () => {
   const token = Cookies.get('token')
   const headers = { Authorization: `Bearer ${token}` }
   const { user, isAuthenticated } = useAuthContext()
+  const toast = useToast()
   const [userType, setUserType] = useState<string | null>(null)
+
 
   const router = useRouter()
 
@@ -31,7 +35,6 @@ export const SubmitModule: React.FC = () => {
 
   useEffect(() => {
     const getUserType = () => {
-      console.log(user?.role)
       return user?.role
     }
 
@@ -40,8 +43,24 @@ export const SubmitModule: React.FC = () => {
   }, [user])
 
   useEffect(() => {
-    // Redirect to the login page if the user type is not valid
-    if (userType && !isValidUserType(userType)) {
+    if(isAuthenticated === false){
+      toast({
+        title: 'Anda harus login terlebih dahulu!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push('/login')
+    }
+    else if (userType && !isValidUserType(userType)) {
+      toast({
+        title: 'ERROR!',
+        status: 'error',
+        position: 'top',
+        duration: 4000,
+        isClosable: true,
+      })
       router.push('/')
     }
   }, [userType, router])
@@ -65,9 +84,8 @@ export const SubmitModule: React.FC = () => {
         formData,
         { headers }
       )
-      console.log('Form submitted successfully:', response.data)
       setIsMutating(false)
-      await router.push('/')
+      await router.push('/home')
     } catch (error: unknown) {
       setIsMutating(false)
       if (axios.isAxiosError(error)) {
@@ -95,7 +113,7 @@ export const SubmitModule: React.FC = () => {
   // @ts-ignore
   // @ts-ignore
   // @ts-ignore
-  if (userType == 'DEVELOPER') {
+  if (user?.role === 'DEVELOPER') {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md">
@@ -337,7 +355,7 @@ export const SubmitModule: React.FC = () => {
         </div>
       </div>
     )
-  } else {
+  } else{
     return <></>
   }
 }
