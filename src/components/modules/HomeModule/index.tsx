@@ -1,4 +1,4 @@
-import React, { use } from 'react'
+import React from 'react'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -9,53 +9,8 @@ import { useToast } from '@chakra-ui/react'
 
 
 export const HomeModule: React.FC = () => {
-  const { user, isAuthenticated } = useAuthContext()
-  const [userType, setUserType] = useState<string | null>(null)
-  const toast = useToast()
-
-
-  const router = useRouter()
-
-  const isValidUserType = (type) => {
-    if (isAuthenticated === false) {
-      return false
-    }
-    return type === 'DEVELOPER' || type === 'USER'
-  }
-
-  useEffect(() => {
-    const getUserType = () => {
-      return user?.role
-    }
-
-    const userType = getUserType()
-    setUserType(userType)
-  }, [user])
-
-  useEffect(() => {
-    if(isAuthenticated === false){
-      toast({
-        title: 'Anda harus login terlebih dahulu!',
-        status: 'error',
-        position: 'top',
-        duration: 4000,
-        isClosable: true,
-      })
-      router.push('/login')
-    }
-    else if (userType && !isValidUserType(userType)) {
-      toast({
-        title: 'ERROR!',
-        status: 'error',
-        position: 'top',
-        duration: 4000,
-        isClosable: true,
-      })
-      router.push('/')
-    }
-  }, [userType, router])
-
-  const [notifications, setNotifications] = useState([])
+  const { user } = useAuthContext()
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [showNotifications, setShowNotifications] = useState(false)
 
   useEffect(() => {
@@ -68,7 +23,7 @@ export const HomeModule: React.FC = () => {
             '/notification/all-notification-by-id',
           { headers }
         )
-        const formattedNotifications = response.data.map((notification) => ({
+        const formattedNotifications = response.data.map((notification: { timestamp: string | number | Date }) => ({
           ...notification,
           timestamp: formatTimestamp(notification.timestamp),
         }))
@@ -83,7 +38,7 @@ export const HomeModule: React.FC = () => {
     }
   }, [showNotifications])
 
-  const formatTimestamp = (timestamp) => {
+  const formatTimestamp = (timestamp: string | number | Date) => {
     const ONE_MINUTE = 60
     const ONE_HOUR = 60 * ONE_MINUTE
     const ONE_DAY = 24 * ONE_HOUR
@@ -111,8 +66,8 @@ export const HomeModule: React.FC = () => {
     }
   }
 
-  const [appDetails, setAppDetails] = useState(null)
-  const [loadedImages, setLoadedImages] = useState([])
+  const [appDetails, setAppDetails] = useState<any[] | null>(null);
+  const [loadedImages, setLoadedImages] = useState<any[]>([]);
 
   useEffect(() => {
     // Fetch data from localhost:8080/all
@@ -122,9 +77,11 @@ export const HomeModule: React.FC = () => {
       .catch((error) => console.error('Error fetching app details:', error))
   }, [])
 
-  const handleImageLoad = (id) => {
-    setLoadedImages((prevLoadedImages) => [...prevLoadedImages, id])
-  }
+  const handleImageLoad = (id: any) => {
+    setLoadedImages((prevLoadedImages: any[]) => [...prevLoadedImages, id]);
+  };
+  
+  
 
   const renderAdminContent = () => {
     if (!appDetails) {
@@ -268,14 +225,27 @@ export const HomeModule: React.FC = () => {
       </div>
     )
   }
-  var content
-  if (userType === 'DEVELOPER') {
+
+  const emptyContent = () => {
+    // Render the user-specific HTML structure
+    return (
+      <div
+        style={{
+          background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
+        }}
+        className="min-h-screen text-white"
+      >
+      </div>
+    )
+  }
+  let content = emptyContent()
+  if (user?.role === 'DEVELOPER') {
     content = renderAdminContent()
-  } else if (userType === 'USER') {
+  } else if (user?.role === 'USER') {
     content = renderUserContent()
   } else {
-    content = renderForbiddenContent
+    content = renderForbiddenContent()
   }
 
-  return <div className={userType}>{content}</div>
+  return <div className={user?.role ? user?.role : undefined}>{content}</div>
 }
