@@ -2,7 +2,6 @@ import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  const { appId } = req.query
   axios
     .delete(
       `{process.env.NEXT_PUBLIC_APP_API_PURCHASE_PAYMENT}/api/v1/cart/checkout`,

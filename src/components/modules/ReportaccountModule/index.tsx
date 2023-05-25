@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button, Input, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -5,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ParamProps } from './interface';
 import { useAuthContext } from '@contexts';
-import Cookies from 'js-cookie';
 
 interface ReportFormData {
   information: string;

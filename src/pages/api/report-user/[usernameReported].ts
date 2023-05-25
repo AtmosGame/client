@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+// eslint-disable-next-line no-unused-vars
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   const { username, usernameReported } = req.query
     axios
@@ -34,3 +35,4 @@ export const config = {
   },
 }
 
+export default handler
