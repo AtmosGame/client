@@ -1,16 +1,17 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-// eslint-disable-next-line no-unused-vars
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  const { username, usernameReported } = req.query
-    axios
+  const { id } = req.query
+  console.log(req.headers.authorization)
+  console.log("a")
+  axios
     .post(
-      `${process.env.NEXT_PUBLIC_APP_API_AUTH_AND_ADMIN_URL}/v1/report/report-user/${username}/${usernameReported}`,
+      `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/verification/${id}/reject`,{},
       {
-        headers:{
-            Authorization: req.headers.authorization
-        }
+        headers: {
+          Authorization: req.headers.authorization,
+        },
       }
     )
     .then((response) => {

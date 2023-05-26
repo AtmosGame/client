@@ -79,7 +79,7 @@ const SearchResults = () => {
 
   return (
     <div className="min-h-screen py-20">
-      <div className="max-w-md mx-auto px-4">
+      <div className="max-w-md mx-auto px-4 pt-40 pb-30">
         {user?.role !== 'USER' && user?.role !== undefined ? (
           <p className="text-red-500 text-center text-lg font-medium">
             You do not have access to view search results.
