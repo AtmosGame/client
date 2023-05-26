@@ -39,7 +39,7 @@ const DetailPage: React.FC = () => {
 
   const fetchAppDetails = async () => {
     try {
-      const response = await axios.get(`/api/app/${id}`, { headers })
+      const response = await axios.get(`/api/store/v1/app-detail/${id}`, { headers })
       setAppDetails(response.data)
     } catch (error) {
       console.error('Error fetching app details:', error)
@@ -66,7 +66,7 @@ const DetailPage: React.FC = () => {
     e.preventDefault()
     try {
       await axios.put(
-        process.env.NEXT_PUBLIC_APP_API_STORE_URL + '/' + id,
+        '/api/store/v1' + '/' + id,
         formValues,
         { headers }
       )
@@ -91,11 +91,9 @@ const DetailPage: React.FC = () => {
       const formData = new FormData()
       formData.append('file', installerValues.file)
       formData.append('version', installerValues.version)
-      console.log(
-        process.env.NEXT_PUBLIC_APP_API_STORE_URL + '/' + id + '/' + 'installer'
-      )
+      
       await axios.put(
-        process.env.NEXT_PUBLIC_APP_API_STORE_URL +
+        '/api/store/v1' +
           '/' +
           id +
           '/' +
@@ -124,7 +122,7 @@ const DetailPage: React.FC = () => {
       formData.append('file', imageValues.file)
 
       await axios.put(
-        `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/${id}/image`,
+        `/api/store/v1/${id}/image`,
         formData,
         { headers }
       )
