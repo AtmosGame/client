@@ -4,7 +4,6 @@ import { useState, useRef } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
-import Head from 'next/head'
 
 export const SubmitModule: React.FC = () => {
   const [appName, setAppName] = useState('')

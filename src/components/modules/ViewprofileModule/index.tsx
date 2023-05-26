@@ -65,7 +65,7 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
 
   return (
     <>
-      <div className="relative h-screen overflow-hidden">
+      <div className="relative h-screen overflow-hidden pt-20">
         <div className="flex flex-col items-center justify-center pt-10 px-6 md:px-0 gap-3">
           <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
             {username === user?.username ? (

@@ -110,7 +110,6 @@ export const SecretTokenModule: React.FC = () => {
           </Button>
         </div>
 
-        <Input />
       </form>
       <div className="z-0 w-full">
         <div className="absolute top-0 -left-4 w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-soft-light filter blur-3xl opacity-70 animate-blob"></div>
