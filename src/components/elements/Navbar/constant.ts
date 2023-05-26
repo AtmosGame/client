@@ -29,4 +29,9 @@ export const NAV_ROUTES: NavRoutesInterface[] = [
     protected: true,
     role: 'ADMIN',
   },
+  {
+    path: '/searchuser',
+    name: 'Search User',
+  
+  },
 ]

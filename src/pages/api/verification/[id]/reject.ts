@@ -2,9 +2,12 @@ import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  const { id } = req.query
+  console.log(req.headers.authorization)
+  console.log("a")
   axios
-    .delete(
-      `{process.env.NEXT_PUBLIC_APP_API_PURCHASE_PAYMENT}/api/v1/cart/checkout`,
+    .post(
+      `${process.env.NEXT_PUBLIC_APP_API_STORE_URL}/verification/${id}/reject`,{},
       {
         headers: {
           Authorization: req.headers.authorization,
