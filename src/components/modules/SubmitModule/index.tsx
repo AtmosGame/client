@@ -73,12 +73,7 @@ export const SubmitModule: React.FC = () => {
   if (user?.role === 'DEVELOPER') {
     return (
       <>
-        <Head>
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
-        </Head>
+        
         <div
           className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
           style={{
