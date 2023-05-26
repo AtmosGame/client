@@ -36,7 +36,7 @@ export const SubmitModule: React.FC = () => {
     formData.append('price', price.toString())
     try {
       await axios.post(
-        process.env.NEXT_PUBLIC_APP_API_STORE_URL + '/submit',
+        '/api/store/v1/submit',
         formData,
         { headers }
       )
@@ -46,15 +46,15 @@ export const SubmitModule: React.FC = () => {
       setIsMutating(false)
       if (axios.isAxiosError(error)) {
         console.error('Error data:', error.response?.data)
-        if (
-          error.response?.data.message.indexOf(
-            "Validation failed for object='appDataRequest'."
-          ) != -1
-        ) {
-          setError('Image File atau Installer File tidak boleh kosong')
-        } else {
-          setError(error.response?.data.message)
-        }
+        // if (
+        //   error.response?.data.message.indexOf(
+        //     "Validation failed for object='appDataRequest'."
+        //   ) != -1
+        // ) {
+        //   setError('Image File atau Installer File tidak boleh kosong')
+        // } else {
+        //   setError(error.response?.data.message)
+        // }
       } else {
         console.error(
           'An error occurred while submitting the form:',
