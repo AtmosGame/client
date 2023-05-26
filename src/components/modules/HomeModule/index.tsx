@@ -15,9 +15,7 @@ export const HomeModule: React.FC = () => {
       try {
         const token = Cookies.get('token')
         const headers = { Authorization: `Bearer ${token}` }
-        const response = await axios.get(
-          process.env.NEXT_PUBLIC_APP_API_STORE_URL +
-            '/notification/all-notification-by-id',
+        const response = await axios.get('api/store/v1/notification/all-notification-by-id',
           { headers }
         )
         const formattedNotifications = response.data.map(
@@ -70,7 +68,7 @@ export const HomeModule: React.FC = () => {
 
   useEffect(() => {
     // Fetch data from localhost:8080/all
-    fetch(process.env.NEXT_PUBLIC_APP_API_STORE_URL + '/all')
+    fetch('api/store/v1' + '/all')
       .then((response) => response.json())
       .then((data) => setAppDetails(data))
       .catch((error) => console.error('Error fetching app details:', error))
