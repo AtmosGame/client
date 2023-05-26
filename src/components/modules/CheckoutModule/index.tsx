@@ -8,17 +8,15 @@ import React, { useEffect, useState } from 'react'
 import { CheckoutInterface } from './interface'
 
 export const CheckoutModule: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const [ isLoading, setIsLoading ] = useState<boolean>(false)
   const [isExpired, setIsExpired] = useState<boolean>(false) // Added state variable
+  // eslint-disable-next-line no-unused-vars
   const [listCheckoutDetails, setListCheckoutDetails] =
     useState<CheckoutInterface>()
   const { isAuthenticated } = useAuthContext()
   const toast = useToast()
   const router = useRouter()
-
-  console.log(isLoading)
-  console.log(listCheckoutDetails)
-  console.log(user)
   
   const getCheckoutHandler = () => {
     setIsLoading(true)

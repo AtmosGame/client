@@ -97,12 +97,7 @@ export const HomeModule: React.FC = () => {
 
     return (
       <>
-        <Head>
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
-        </Head>
+        
         <div
           style={{
             background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
@@ -171,12 +166,7 @@ export const HomeModule: React.FC = () => {
     // Render the user-specific HTML structure
     return (
       <>
-        <Head>
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
-        </Head>
+        
         <div
           style={{
             background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',

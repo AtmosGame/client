@@ -177,12 +177,6 @@ const DetailPage: React.FC = () => {
   if (user?.role === 'DEVELOPER') {
     return (
       <>
-        <Head>
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
-        </Head>
         <div
           style={{
             background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
