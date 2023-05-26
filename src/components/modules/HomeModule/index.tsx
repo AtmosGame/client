@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useAuthContext } from '@contexts'
 import Cookies from 'js-cookie'
 import Link from 'next/link'
-import Head from 'next/head'
 
 export const HomeModule: React.FC = () => {
   const { user } = useAuthContext()
