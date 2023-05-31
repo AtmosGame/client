@@ -33,7 +33,7 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
           </div>
           {user && user.id == devId ? (
             <div className="flex flex-row justify-end gap-2">
-              <Link href={`/app-developer/${appId}`}>
+              <Link href={`/detail-developer/${appId}`}>
                 <Button colorScheme="yellow" variant="solid">
                   Edit
                 </Button>
