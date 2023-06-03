@@ -15,7 +15,8 @@ export const HomeModule: React.FC = () => {
       try {
         const token = Cookies.get('token')
         const headers = { Authorization: `Bearer ${token}` }
-        const response = await axios.get('api/store/v1/notification/all-notification-by-id',
+        const response = await axios.get(
+          'api/store/v1/notification/all-notification-by-id',
           { headers }
         )
         const formattedNotifications = response.data.map(
@@ -94,7 +95,6 @@ export const HomeModule: React.FC = () => {
 
     return (
       <>
-        
         <div
           style={{
             background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
@@ -151,6 +151,14 @@ export const HomeModule: React.FC = () => {
               </div>
             )}
           </div>
+          <div className="flex justify-center mb-8">
+            <a href="/app/submit" className="text-center">
+              <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
+                Submit App
+              </button>
+            </a>
+          </div>
+          <br></br>
         </div>
       </>
     )
@@ -163,7 +171,6 @@ export const HomeModule: React.FC = () => {
     // Render the user-specific HTML structure
     return (
       <>
-        
         <div
           style={{
             background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
@@ -205,6 +212,13 @@ export const HomeModule: React.FC = () => {
               </div>
             )}
           </div>
+          <div className="flex justify-center mb-8">
+            <a href="/search" className="text-center">
+              <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
+                Search App
+              </button>
+            </a>
+          </div>
         </div>
       </>
     )
@@ -218,7 +232,7 @@ export const HomeModule: React.FC = () => {
         }}
         className="min-h-screen text-white"
       >
-        <div className="container mx-auto py-8">
+        <div className="container mx-auto py-20">
           <h1 className="text-2xl font-bold mb-4 text-center text-red-500">
             Forbidden
           </h1>
