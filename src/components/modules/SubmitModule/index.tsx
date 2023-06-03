@@ -74,12 +74,12 @@ export const SubmitModule: React.FC = () => {
       <>
         
         <div
-          className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+          className="pt-24 min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
           style={{
             background: 'radial-gradient(circle at center, #1e2a3a, #1b2025)',
           }}
         >
-          <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md">
+          <div className=" max-w-md w-full bg-white p-6 rounded-md shadow-md">
             <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">
               Upload Form
             </h2>
