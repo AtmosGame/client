@@ -248,28 +248,30 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   } else {
     return (
       <>
-        <ThumbnailSection
-          appId={appId}
-          title={app.name}
-          description={app.description}
-          imageUrl={app.imageUrl}
-          devId={app.userId}
-          isFollowing={isSubscribed}
-          onFollow={followApp}
-          onUnfollow={unfollowApp}
-          onDelete={deleteApp}
-        />
-        {!(user && (user.role === 'ADMIN' || app.userId == user.id)) && (
-          <DownloadSection
+        <div className="pt-20">
+          <ThumbnailSection
+            appId={appId}
             title={app.name}
-            price={app.price}
-            status={getAppStatus(isPurchased, isAppInCart)}
-            version={app.version}
-            downloadUrl={downloadUrl}
-            onCartAdd={addAppToCart}
-            onCartRemove={removeAppFromCart}
+            description={app.description}
+            imageUrl={app.imageUrl}
+            devId={app.userId}
+            isFollowing={isSubscribed}
+            onFollow={followApp}
+            onUnfollow={unfollowApp}
+            onDelete={deleteApp}
           />
-        )}
+          {!(user && (user.role === 'ADMIN' || app.userId == user.id)) && (
+            <DownloadSection
+              title={app.name}
+              price={app.price}
+              status={getAppStatus(isPurchased, isAppInCart)}
+              version={app.version}
+              downloadUrl={downloadUrl}
+              onCartAdd={addAppToCart}
+              onCartRemove={removeAppFromCart}
+            />
+          )}
+        </div>
       </>
     )
   }
