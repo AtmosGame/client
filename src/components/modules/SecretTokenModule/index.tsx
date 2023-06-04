@@ -65,7 +65,7 @@ export const SecretTokenModule: React.FC = () => {
       })
       .catch((error) => {
         toast({
-          title: 'Gagal menambahkan secret token! Silakan coba lagi',
+          title: error.response.data.message,
           status: 'error',
           position: 'top',
           duration: 4000,
