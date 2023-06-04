@@ -6,6 +6,10 @@ export const NAV_ROUTES: NavRoutesInterface[] = [
     name: 'Beranda',
   },
   {
+    path: '/home',
+    name: 'Home',
+  },
+  {
     path: '/cart',
     name: 'Cart',
     protected: true,
