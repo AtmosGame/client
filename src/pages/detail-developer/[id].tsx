@@ -39,7 +39,9 @@ const DetailPage: React.FC = () => {
 
   const fetchAppDetails = async () => {
     try {
-      const response = await axios.get(`/api/store/v1/app-detail/${id}`, { headers })
+      const response = await axios.get(`/api/store/v1/app-detail/${id}`, {
+        headers,
+      })
       setAppDetails(response.data)
     } catch (error) {
       console.error('Error fetching app details:', error)
@@ -65,20 +67,20 @@ const DetailPage: React.FC = () => {
     setIsMutating(true)
     e.preventDefault()
     try {
-      await axios.put(
-        '/api/store/v1' + '/' + id,
-        formValues,
-        { headers }
-      )
+      await axios.put('/api/store/v1' + '/' + id, formValues, { headers })
       setUpdateSuccess(true)
 
       setUpdateError('')
       fetchAppDetails()
       setIsMutating(false)
-    } catch (error) {
+    } catch (error : any) {
       console.error('Error updating app details:', error)
       setUpdateSuccess(false)
-      setUpdateError('Failed to update app details.')
+      if (error.response?.data.message) {
+        setUpdateError(error.response?.data.message)
+      } else {
+        setUpdateError('Failed to update app details.')
+      }
       setIsMutating(false)
     }
   }
@@ -91,13 +93,9 @@ const DetailPage: React.FC = () => {
       const formData = new FormData()
       formData.append('file', installerValues.file)
       formData.append('version', installerValues.version)
-      
+
       await axios.put(
-        '/api/store/v1' +
-          '/' +
-          id +
-          '/' +
-          'installer',
+        '/api/store/v1' + '/' + id + '/' + 'installer',
         formData,
         { headers }
       )
@@ -105,10 +103,20 @@ const DetailPage: React.FC = () => {
       setUpdateError('')
       fetchAppDetails()
       setIsMutating(false)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating installer:', error)
       setUpdateSuccess(false)
-      setUpdateError('Failed to update installer.')
+      if (
+        error.response?.data.message.indexOf(
+          "Validation failed for object='appDataRequest'."
+        ) != -1
+      ) {
+        setUpdateError('Installer File tidak boleh kosong')
+      } else if (error.response?.data.message) {
+        setUpdateError(error.response?.data.message)
+      } else {
+        setUpdateError('Failed to update installer.')
+      }
       setIsMutating(false)
     }
   }
@@ -121,19 +129,25 @@ const DetailPage: React.FC = () => {
       const formData = new FormData()
       formData.append('file', imageValues.file)
 
-      await axios.put(
-        `/api/store/v1/${id}/image`,
-        formData,
-        { headers }
-      )
+      await axios.put(`/api/store/v1/${id}/image`, formData, { headers })
       setUpdateSuccess(true)
       setUpdateError('')
       fetchAppDetails()
       setIsMutating(false)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating image:', error)
       setUpdateSuccess(false)
-      setUpdateError('Failed to update image.')
+      if (
+        error.response?.data.message.indexOf(
+          "Validation failed for object='appDataRequest'."
+        ) != -1
+      ) {
+        setUpdateError('Image File tidak boleh kosong')
+      } else if (error.response?.data.message) {
+        setUpdateError(error.response?.data.message)
+      } else {
+        setUpdateError('Failed to update image.')
+      }
       setIsMutating(false)
     }
   }
