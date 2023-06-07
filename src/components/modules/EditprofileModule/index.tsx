@@ -15,6 +15,7 @@ interface ProfileFormData {
   }
 
 export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
+    // eslint-disable-next-line no-unused-vars
   const [userView, setUser] = useState<ViewProfileProps>()
   // const [dropdownActive, setDropdownActive] = useState<boolean>(false)
   const toast = useToast()
