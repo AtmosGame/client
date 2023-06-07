@@ -70,11 +70,11 @@ export const ViewprofileModule: React.FC<ParamProps> = ({ username }) => {
           <div className="w-full md:w-[500px] h-auto flex flex-col z-10 relative">
             {username === user?.username ? (
               <div className="absolute right-2 top-2">
-                <IconEditProfileComponent url="#" />
+                <IconEditProfileComponent url={`/editprofile/${username}`} />
               </div>
             ) : (
               <div className="absolute right-2 top-2">
-                <IconReportComponent url="#" />
+                <IconReportComponent url={`/reportaccount/${user?.username}/${username}`} />
               </div>
             )}
 
