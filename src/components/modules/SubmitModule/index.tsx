@@ -46,15 +46,15 @@ export const SubmitModule: React.FC = () => {
       setIsMutating(false)
       if (axios.isAxiosError(error)) {
         console.error('Error data:', error.response?.data)
-        // if (
-        //   error.response?.data.message.indexOf(
-        //     "Validation failed for object='appDataRequest'."
-        //   ) != -1
-        // ) {
-        //   setError('Image File atau Installer File tidak boleh kosong')
-        // } else {
-        //   setError(error.response?.data.message)
-        // }
+        if (
+          error.response?.data.message.indexOf(
+            "Validation failed for object='appDataRequest'."
+          ) != -1
+        ) {
+          setError('Image File atau Installer File tidak boleh kosong')
+        } else {
+          setError(error.response?.data.message)
+        }
       } else {
         console.error(
           'An error occurred while submitting the form:',

@@ -22,8 +22,6 @@ export const EditprofileModule: React.FC<ParamProps> = ({ username }) => {
   // eslint-disable-next-line no-unused-vars
   const { user, isAuthenticated } = useAuthContext()
   
-  console.log(userView)
-  console.log(user)
 
   useEffect(() => {
     if(isAuthenticated===false){
