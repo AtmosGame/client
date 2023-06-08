@@ -4,7 +4,6 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
 import React from 'react'
-import { log } from 'console'
 
 const DetailPage: React.FC = () => {
   const token = Cookies.get('token')
