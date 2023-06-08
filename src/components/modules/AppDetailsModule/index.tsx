@@ -125,7 +125,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         },
       })
       .then(() => {
-        router.replace('/app')
+        router.replace('/home')
       })
       .catch(() => {
         toast({
@@ -265,7 +265,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
             onUnfollow={unfollowApp}
             onDelete={deleteApp}
           />
-          {!(user && (user.role === 'ADMIN' || app.userId == user.id)) && (
+          {!(user && (user.role === 'ADMIN' || user.role === 'DEVELOPER')) && (
             <DownloadSection
               title={app.name}
               price={app.price}
