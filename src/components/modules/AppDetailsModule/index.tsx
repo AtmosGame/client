@@ -16,10 +16,10 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
   const { user, isAuthenticated } = useAuthContext()
 
   const [app, setApp] = useState<App | null>(null)
-  const [isPurchased, setIsPurchased] = useState(false)
-  const [downloadUrl, setDownloadUrl] = useState('')
-  const [isAppInCart, setIsAppInCart] = useState(false)
-  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isPurchased, setIsPurchased] = useState<boolean | null>(null)
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
+  const [isAppInCart, setIsAppInCart] = useState<boolean | null>(null)
+  const [isSubscribed, setIsSubscribed] = useState<boolean | null>(null)
 
   const followApp = () => {
     axios
@@ -150,6 +150,11 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
     }
     return 'add-to-cart'
   }
+  
+  const isLoadingUser = () => {
+    const isStateNull = isPurchased === null || isSubscribed === null || downloadUrl === null || isAppInCart === null
+    return !!user && user.role === 'USER' && isStateNull
+  }
 
   useEffect(() => {
     axios
@@ -231,9 +236,9 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
           })
         })
     }
-  }, [isAuthenticated, user?.role, user?.id])
+  }, [isAuthenticated, !app])
 
-  if (!app) {
+  if (!app || !isAuthenticated || isLoadingUser()) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
         <Spinner
@@ -255,7 +260,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
             description={app.description}
             imageUrl={app.imageUrl}
             devId={app.userId}
-            isFollowing={isSubscribed}
+            isFollowing={isSubscribed ? isSubscribed : false}
             onFollow={followApp}
             onUnfollow={unfollowApp}
             onDelete={deleteApp}
@@ -264,9 +269,9 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
             <DownloadSection
               title={app.name}
               price={app.price}
-              status={getAppStatus(isPurchased, isAppInCart)}
+              status={getAppStatus(isPurchased ? isPurchased : false, isAppInCart ? isAppInCart : false)}
               version={app.version}
-              downloadUrl={downloadUrl}
+              downloadUrl={downloadUrl ? downloadUrl : ''}
               onCartAdd={addAppToCart}
               onCartRemove={removeAppFromCart}
             />
