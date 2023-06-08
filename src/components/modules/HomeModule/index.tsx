@@ -106,7 +106,7 @@ export const HomeModule: React.FC = () => {
             {appDetails.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {appDetails.map((app) => (
-                  <Link key={app.id} href={`/detail-developer/${app.id}`}>
+                  <Link key={app.id} href={`/app/${app.id}`}>
                     <div
                       style={{ backgroundColor: '#203040' }}
                       className="rounded-lg shadow-md p-4 flex flex-col items-start justify-between cursor-pointer"
