@@ -55,7 +55,7 @@ export const VerificationSection: React.FC<VerificationSectionProps> = () => {
     )
   } else {
     return (
-      <div className="py-[24px] lg:px-[24px] w-full flex flex-col gap-2 items-center">
+      <div className="py-[24px] lg:px-[24px] w-full flex flex-col gap-2 items-center pt-[128px]">
         {appList.map((app, index) => {
           return (
             <div
