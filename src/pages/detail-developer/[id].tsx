@@ -4,6 +4,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useAuthContext } from '@contexts'
 import React from 'react'
+import { log } from 'console'
 
 const DetailPage: React.FC = () => {
   const token = Cookies.get('token')
@@ -106,11 +107,7 @@ const DetailPage: React.FC = () => {
     } catch (error: any) {
       console.error('Error updating installer:', error)
       setUpdateSuccess(false)
-      if (
-        error.response?.data.message.indexOf(
-          "Validation failed for object='appDataRequest'."
-        ) != -1
-      ) {
+      if (error.response?.data.message === undefined) {
         setUpdateError('Installer File tidak boleh kosong')
       } else if (error.response?.data.message) {
         setUpdateError(error.response?.data.message)
@@ -138,9 +135,7 @@ const DetailPage: React.FC = () => {
       console.error('Error updating image:', error)
       setUpdateSuccess(false)
       if (
-        error.response?.data.message.indexOf(
-          "Validation failed for object='appDataRequest'."
-        ) != -1
+        error.response?.data.message === undefined
       ) {
         setUpdateError('Image File tidak boleh kosong')
       } else if (error.response?.data.message) {
