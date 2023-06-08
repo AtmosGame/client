@@ -42,14 +42,12 @@ export const SubmitModule: React.FC = () => {
       )
       setIsMutating(false)
       await router.push('/home')
-    } catch (error: unknown) {
+    } catch (error: any) {
       setIsMutating(false)
       if (axios.isAxiosError(error)) {
         console.error('Error data:', error.response?.data)
         if (
-          error.response?.data.message.indexOf(
-            "Validation failed for object='appDataRequest'."
-          ) != -1
+          error.response?.data.message === undefined
         ) {
           setError('Image File atau Installer File tidak boleh kosong')
         } else {
