@@ -125,7 +125,7 @@ export const AppDetailsModule: React.FC<AppDetailsModuleProps> = ({
         },
       })
       .then(() => {
-        router.replace('/app')
+        router.replace('/home')
       })
       .catch(() => {
         toast({
